@@ -93,7 +93,7 @@ int CalcularFactorial (float operador){
 void MostrarResultados (int banderaDivision, float resultadoSuma, float resultadoResta, float resultadoDivision, float resultadoMultiplicacion, int factorialPrimerOperando, int factorialSegundoOperando, float primerOp, float segundoOp){
 	printf("El resultado de %.2f + %.2f es: %.2f\n", primerOp, segundoOp, resultadoSuma);
 	printf("El resultado de %.2f - %.2f es: %.2f\n", primerOp, segundoOp, resultadoResta);
-	printf("El resultado de %.2f  %.2f es: %.2f\n", primerOp, segundoOp, resultadoDivision);
+
 	if(banderaDivision!=1){
 		printf("No se puede dividir por cero\n");
 	}
