@@ -34,6 +34,7 @@ que contenga las funciones para realizar las cinco operaciones.
 #include <stdio.h>
 #include <stdlib.h>
 #include "input.h"
+#define M "El resultado de"
 
 
 
@@ -50,8 +51,10 @@ int main(void) {
 	float resultadoResta;
 	float resultadoDivision;
 	float resultadoMultiplicacion;
-	int factorialPrimerOperando;
-	int factorialSegundoOperando;
+	unsigned long factorialPrimerOperando;
+	unsigned long factorialSegundoOperando;
+	int banderaFactorialPrimerOp;
+	int banderaFactorialSegundoOp;
 	opcionSalida=0;
 
 	do{
@@ -85,13 +88,17 @@ int main(void) {
 			break;
 		case 3:
 			if(banderaPrimerOperando==1 && banderaSegundoOperando==1){
+			printf("Calculando operaciones... LISTO!\n");
+			printf("\n");
 			SumarOperandos(primerOperando, segundoOperando, &resultadoSuma);
 			RestarOperandos(primerOperando, segundoOperando, &resultadoResta);
 			banderaDivision= DividirOperandos(primerOperando, segundoOperando, &resultadoDivision);
 
 			MultiplicarOperandos(primerOperando, segundoOperando, &resultadoMultiplicacion);
-			factorialPrimerOperando= CalcularFactorial(primerOperando);
-			factorialSegundoOperando= CalcularFactorial(segundoOperando);
+			banderaFactorialPrimerOp= CalcularFactorial(primerOperando, &factorialPrimerOperando);
+			banderaFactorialSegundoOp= CalcularFactorial(segundoOperando, &factorialSegundoOperando);
+
+
 			}
 				else{
 				printf("Para calcular las operaciones se deben ingresar ambos operandos. Ingrese operando/s nuevamente.\n");
@@ -100,15 +107,36 @@ int main(void) {
 			break;
 		case 4:
 			if(banderaPrimerOperando==1 && banderaSegundoOperando==1){
-			MostrarResultados(banderaDivision, resultadoSuma, resultadoResta, resultadoDivision, resultadoMultiplicacion, factorialPrimerOperando, factorialSegundoOperando, primerOperando, segundoOperando);
+			MostrarResultadosFlotantes(M, 43, resultadoSuma, primerOperando, segundoOperando);
+			MostrarResultadosFlotantes(M, 45, resultadoResta, primerOperando, segundoOperando);
+			if(banderaDivision==1){
+				MostrarResultadosFlotantes(M, 47, resultadoDivision, primerOperando, segundoOperando);
+			}
+			else{
+				printf("No se puede dividir por cero\n");
+			}
+			MostrarResultadosFlotantes(M, 42, resultadoMultiplicacion, primerOperando, segundoOperando);
+
+			if(banderaFactorialPrimerOp==0){
+				MostrarResultadosEnteros("El factorial de", factorialPrimerOperando, primerOperando );
+			}
+			else{
+				printf("No se puede calcular el factorial del primer operando, ingrese nuevamente por favor.\n");
+			}
+			if(banderaFactorialSegundoOp==0){
+				MostrarResultadosEnteros("El factorial de", factorialSegundoOperando, segundoOperando);
+			}
+			else{
+				printf("No se puede calcular el factorial del segundo operando, ingrese nuevamente por favor.\n");
+			}
 			}
 			else{
 				printf("Error. No se pueden mostrar operaciones. Ingrese todos los operandos.\n");
 			}
+
 			break;
 		case 5:
-			printf("Seguro que desea salir?\nIngrese el numero de opcion que corresponda\n1. Si, estoy seguro.\n2. No, quiero seguir operando\n");
-			scanf("%d", &opcionSalida);
+			opcionSalida= SalirDelPrograma();
 			break;
 
 

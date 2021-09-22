@@ -11,16 +11,16 @@ int IngresarOpcion(){
 	int opcion;
 	printf("Ingrese una opcion: \n");
 	scanf("%d", &opcion);
-	opcion= ValidarOpcion(opcion);
+	opcion= ValidarOpcion(opcion, 1, 5);
 	return opcion;
 }
 
-int ValidarOpcion(int opcion){
+int ValidarOpcion(int opcion, int min, int max){
 	int numeroValidado;
-	if(opcion<1 || opcion>5){
-			printf("opcion incorrecta. Reingrese opcion");
+	if(opcion<min || opcion>max){
+			printf("Opcion incorrecta. Reingrese una opcion entre %d y %d: ", min, max);
 			scanf("%d", &numeroValidado);
-			numeroValidado= ValidarOpcion(numeroValidado);
+			numeroValidado= ValidarOpcion(numeroValidado, 1, 5);
 		}
 	else{
 		numeroValidado= opcion;
@@ -73,35 +73,50 @@ void MultiplicarOperandos( float primerOp, float segundoOp, float* multiplicacio
 }
 
 
-int CalcularFactorial (float operador){
+int CalcularFactorial (float operador, unsigned long* factorialOperando){
 	int numero;
-	int factorial;
+	unsigned long factorial;
 	int op;
-	op= (int)operador;
-	factorial=1;
-	if(op!=0 && op!=1){
-	for(numero=op; numero>0; numero--){
-		factorial= factorial*numero;
+	int banderaFactorialPermitido;
+	op= operador;
 
-
-	}
-	}
-
-	return factorial;
-}
-
-void MostrarResultados (int banderaDivision, float resultadoSuma, float resultadoResta, float resultadoDivision, float resultadoMultiplicacion, int factorialPrimerOperando, int factorialSegundoOperando, float primerOp, float segundoOp){
-	printf("El resultado de %.2f + %.2f es: %.2f\n", primerOp, segundoOp, resultadoSuma);
-	printf("El resultado de %.2f - %.2f es: %.2f\n", primerOp, segundoOp, resultadoResta);
-
-	if(banderaDivision!=1){
-		printf("No se puede dividir por cero\n");
+	if(operador-op || op<0){
+		banderaFactorialPermitido=1;
 	}
 	else{
-		printf("El resultado de %.2f / %.2f es: %.2f\n", primerOp, segundoOp, resultadoDivision);
-	}
-	printf("El resultado de %.2f * %.2f es: %.2f\n", primerOp, segundoOp, resultadoMultiplicacion);
-	printf("El factorial de %.2f es: %d\nEl factorial de %.2f es: %d\n", primerOp, factorialPrimerOperando, segundoOp, factorialSegundoOperando);
+		banderaFactorialPermitido=0;
+		factorial=1;
+		*factorialOperando= factorial;
+			if(op!=0 && op!=1 && op>0){
+			for(numero=op; numero>0; numero--){
+				factorial= factorial*numero;
 
+
+			}
+			*factorialOperando= factorial;
+			}
+
+
+	}
+
+	return banderaFactorialPermitido;
+}
+
+void MostrarResultadosFlotantes(char* mensaje, char signo, float resultado, float primerOp, float segundoOp){
+	printf("%s %.2f %c %.2f es %.3f\n", mensaje, primerOp, signo, segundoOp, resultado);
+
+}
+
+void MostrarResultadosEnteros(char* mensaje, unsigned long resultado, float operando){
+	int op;
+	op=operando;
+	printf("%s %d es %lu\n", mensaje, op, resultado);
+}
+
+int SalirDelPrograma (){
+	int opcionSalir;
+	printf("Seguro que desea salir?\nIngrese el numero de opcion que corresponda:\n1. Si, estoy seguro.\n2. No, quiero seguir operando.\n");
+	scanf("%d", &opcionSalir);
+	return opcionSalir;
 }
 

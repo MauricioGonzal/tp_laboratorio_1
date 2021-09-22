@@ -15,12 +15,14 @@
 /// @return numero validado
 int IngresarOpcion();
 
-/// @fn int ValidarOpcion(int)
+/// @fn int ValidarOpcion(int, int, int)
 /// @brief valida si el numero ingresado esta entre 1 y 5
 ///
-/// @param numero ingresado por el usuario
-/// @return numero validado
-int ValidarOpcion(int);
+/// @param opcion ingresada
+/// @param minimo valido
+/// @param maximo valido
+/// @return opcion validada
+int ValidarOpcion(int, int, int);
 
 /// @fn int IngresarOperandos(float*, char*)
 /// @brief pide operandos al usuario, puede ser el primero o el segundo
@@ -64,26 +66,33 @@ int DividirOperandos(float primerOp, float segundoOp, float* division);
 void MultiplicarOperandos( float primerOp, float segundoOp, float* multiplicacion);
 
 
-/// @fn int CalcularFactorial(float)
-/// @brief calcula el factorial de un numero flotante
+/// @fn int CalcularFactorial(float, unsigned long*)
+/// @brief multiplica los numeros del q hasta el operador en caso de que sea valido realizar el factorial
 ///
 /// @param operador
-/// @return factorial del operador indicado como parametro
-int CalcularFactorial (float operador);
-/// @fn void MostrarResultados(int, float, float, float, float, int, int, float, float)
-/// @brief muestra todos los resultados de las operaciones
+/// @param referencia
+/// @return devuelve 1 si no se puede realizar el factorial o 0 si es valido
+int CalcularFactorial (float operador, unsigned long*);
+/// @fn void MostrarResultadosFlotantes(char*, char, float, float, float)
+/// @brief muestra resultados con coma
 ///
-/// @param banderaDivision
-/// @param resultadoSuma
-/// @param resultadoResta
-/// @param resultadoDivision
-/// @param resultadoMultiplicacion
-/// @param factorialPrimerOperando
-/// @param factorialSegundoOperando
+/// @param mensaje
+/// @param signo
+/// @param resultado
 /// @param primerOp
 /// @param segundoOp
-void MostrarResultados (int banderaDivision, float resultadoSuma, float resultadoResta, float resultadoDivision, float resultadoMultiplicacion, int factorialPrimerOperando, int factorialSegundoOperando, float primerOp, float segundoOp);
-
-
+void MostrarResultadosFlotantes(char* mensaje, char signo, float resultado, float primerOp, float segundoOp);
+/// @fn void MostrarResultadosEnteros(char*, unsigned long, float)
+/// @brief muestra resultados enteros
+///
+/// @param mensaje
+/// @param resultadoFactorial
+/// @param operando
+void MostrarResultadosEnteros(char* mensaje, unsigned long resultadoFactorial, float operando);
+/// @fn int SalirDelPrograma()
+/// @brief en caso que el usuario ingrese como opcion un 5 le pregunta si quiere salir del programa
+///
+/// @return 1 si esta seguro de salir del programa o 2 si quiere seguir operando
+int SalirDelPrograma ();
 
 #endif /* INPUT_H_ */
