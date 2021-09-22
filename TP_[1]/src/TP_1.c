@@ -36,8 +36,6 @@ que contenga las funciones para realizar las cinco operaciones.
 #include "input.h"
 #define M "El resultado de"
 
-
-
 int main(void) {
 	setbuf(stdout, NULL);
 	int opcion;
@@ -78,8 +76,7 @@ int main(void) {
 
 		opcion= IngresarOpcion();
 
-
-		switch(opcion){
+	switch(opcion){
 		case 1:
 			banderaPrimerOperando= IngresarOperandos(&primerOperando, "Ingrese primer operando: ");
 			break;
@@ -98,12 +95,10 @@ int main(void) {
 			banderaFactorialPrimerOp= CalcularFactorial(primerOperando, &factorialPrimerOperando);
 			banderaFactorialSegundoOp= CalcularFactorial(segundoOperando, &factorialSegundoOperando);
 
-
 			}
-				else{
+			else{
 				printf("Para calcular las operaciones se deben ingresar ambos operandos. Ingrese operando/s nuevamente.\n");
 			}
-
 			break;
 		case 4:
 			if(banderaPrimerOperando==1 && banderaSegundoOperando==1){
@@ -123,23 +118,22 @@ int main(void) {
 			else{
 				printf("No se puede calcular el factorial del primer operando, ingrese nuevamente por favor.\n");
 			}
+
 			if(banderaFactorialSegundoOp==0){
 				MostrarResultadosEnteros("El factorial de", factorialSegundoOperando, segundoOperando);
 			}
 			else{
 				printf("No se puede calcular el factorial del segundo operando, ingrese nuevamente por favor.\n");
 			}
+
 			}
 			else{
 				printf("Error. No se pueden mostrar operaciones. Ingrese todos los operandos.\n");
 			}
-
 			break;
 		case 5:
 			opcionSalida= SalirDelPrograma();
 			break;
-
-
 
 		}
 	}while(opcionSalida!=1);

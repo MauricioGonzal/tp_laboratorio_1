@@ -39,8 +39,6 @@ int IngresarOperandos(float* operando, char* mensaje){
 	return bandera;
 }
 
-
-
 void SumarOperandos (float primerOp, float segundoOp, float* resultadoSuma){
 	float suma;
 	suma= primerOp+segundoOp;
@@ -95,9 +93,7 @@ int CalcularFactorial (float operador, unsigned long* factorialOperando){
 			}
 			*factorialOperando= factorial;
 			}
-
-
-	}
+		}
 
 	return banderaFactorialPermitido;
 }

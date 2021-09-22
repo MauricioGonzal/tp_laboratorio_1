@@ -65,7 +65,6 @@ int DividirOperandos(float primerOp, float segundoOp, float* division);
 /// @param multiplicacion
 void MultiplicarOperandos( float primerOp, float segundoOp, float* multiplicacion);
 
-
 /// @fn int CalcularFactorial(float, unsigned long*)
 /// @brief multiplica los numeros del q hasta el operador en caso de que sea valido realizar el factorial
 ///
@@ -73,6 +72,7 @@ void MultiplicarOperandos( float primerOp, float segundoOp, float* multiplicacio
 /// @param referencia
 /// @return devuelve 1 si no se puede realizar el factorial o 0 si es valido
 int CalcularFactorial (float operador, unsigned long*);
+
 /// @fn void MostrarResultadosFlotantes(char*, char, float, float, float)
 /// @brief muestra resultados con coma
 ///
@@ -82,6 +82,7 @@ int CalcularFactorial (float operador, unsigned long*);
 /// @param primerOp
 /// @param segundoOp
 void MostrarResultadosFlotantes(char* mensaje, char signo, float resultado, float primerOp, float segundoOp);
+
 /// @fn void MostrarResultadosEnteros(char*, unsigned long, float)
 /// @brief muestra resultados enteros
 ///
@@ -89,6 +90,7 @@ void MostrarResultadosFlotantes(char* mensaje, char signo, float resultado, floa
 /// @param resultadoFactorial
 /// @param operando
 void MostrarResultadosEnteros(char* mensaje, unsigned long resultadoFactorial, float operando);
+
 /// @fn int SalirDelPrograma()
 /// @brief en caso que el usuario ingrese como opcion un 5 le pregunta si quiere salir del programa
 ///
