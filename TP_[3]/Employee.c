@@ -30,8 +30,14 @@ Employee* employee_newParametros(char* idStr,char* nombreStr,char* horasTrabajad
 	return pEmpleado;
 }
 
-void employee_delete(Employee* empleado){
-
+int employee_delete(Employee* this){
+	int retorno;
+	retorno=-1;
+	if(this!=NULL){
+		free(this);
+		retorno=0;
+	}
+	return retorno;
 
 }
 
@@ -206,4 +212,45 @@ int AsignarId (LinkedList* pArrayEmpleados){
 	return id;
 }
 
+int editEmployee(LinkedList* pArrayListEmployee){
+	int retorno;
+		int idAux;
+		char sueldo[10];
+		char horasTrabajadas[5];
+		int sueldoInt;
+		int horasInt;
+		int len;
+		retorno= -1;
+		len= ll_len(pArrayListEmployee);
+		Employee* empleado;
+		idAux= LoadInt("ingrese el id del empleado que desea modificar");
+		for(int i=0; i<len; i++){
+			empleado= (Employee*)ll_get(pArrayListEmployee, i);
+			if(empleado!=NULL){
+				retorno=1;
+				if(idAux== empleado->id ){
+				PedirYValidarNumero(sueldo, "ingrese el nuevo sueldo");
+				sueldoInt= atoi(sueldo);
+				employee_setSueldo(empleado, sueldoInt);
+				PedirYValidarNumero(horasTrabajadas,"ingrese las nuevas horas trabajadas");
+				horasInt= atoi(horasTrabajadas);
+				employee_setHorasTrabajadas(empleado, horasInt);
+				retorno=0;
+				break;
+				}
+			}
+		}
+		return retorno;
+}
 
+
+int employee_compareByName(void* e1, void* e2){
+	Employee* unEmpleado;
+	Employee* otroEmpleado;
+	unEmpleado= (Employee*) e1;
+	otroEmpleado = (Employee*)e2;
+
+
+
+
+}

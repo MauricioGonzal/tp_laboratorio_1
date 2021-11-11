@@ -16,7 +16,7 @@ int LoadIntRange(char message[], int* opcion, int num);
 void LoadString(char message[], char loadedString[]);
 int SalirDelPrograma();
 void VerificacionRetorno(int retorno, char mensajeCorrecto[], char mensajeError[]);
-void VerificarTresRetornos(int retorno, char mensajeCorrecto[], char mensajeNoExiste[], char mensajeError[]);
+void VerificarTresRetornos(int retorno, char mensajeCero[], char mensajeUno[], char mensajeError[]);
 void Menu ();
 int ordenarArrayInt(int* pArray, int limite);
 int ValidarNumero(char numeros[]);

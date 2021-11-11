@@ -37,5 +37,6 @@ int BuscarMayorId(LinkedList* pArrayEmpleados, int* id );
 int AsignarId (LinkedList* pArrayEmpleados);
 
 int employee_compareByName(void*, void*);
+int editEmployee(LinkedList* pArrayListEmployee);
 
 #endif // employee_H_INCLUDED

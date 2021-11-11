@@ -79,7 +79,7 @@ int controller_addEmployee(LinkedList* pArrayListEmployee)
 	int maxId;
 	int len;
 	len= ll_len(pArrayListEmployee);
-	printf("%d", len);
+
 	if(pArrayListEmployee!=NULL){
 
 
@@ -118,28 +118,9 @@ int controller_addEmployee(LinkedList* pArrayListEmployee)
  */
 int controller_editEmployee(LinkedList* pArrayListEmployee)
 {
-	int idAux;
-	char sueldo[10];
-	char horasTrabajadas[5];
-	int sueldoInt;
-	int horasInt;
-	int len;
-	len= ll_len(pArrayListEmployee);
-	Employee* empleado;
-	idAux= LoadInt("ingrese el id del empleado que desea modificar");
-	for(int i=0; i<len; i++){
-		empleado= (Employee*)ll_get(pArrayListEmployee, i);
-		if(empleado!=NULL && idAux== empleado->id ){
-			PedirYValidarNumero(sueldo, "ingrese el nuevo sueldo");
-			sueldoInt= atoi(sueldo);
-			employee_setSueldo(empleado, sueldoInt);
-			PedirYValidarNumero(horasTrabajadas,"ingrese las nuevas horas trabajadas");
-			horasInt= atoi(horasTrabajadas);
-			employee_setHorasTrabajadas(empleado, horasInt);
-			break;
-		}
-	}
-
+	int retorno;
+	retorno= editEmployee(pArrayListEmployee);
+	VerificarTresRetornos(retorno, "Empleado modificado correctamente\n", "El empleado con el id ingresado no existe. Verifique los datos.\n", "Error, vuelva a intentar");
 
     return 1;
 }
@@ -169,6 +150,7 @@ int controller_removeEmployee(LinkedList* pArrayListEmployee)
 			empleado= (Employee*)ll_get(pArrayListEmployee, i);
 			if(empleado!=NULL && idAux== empleado->id ){
 				ll_remove(pArrayListEmployee, i);
+				employee_delete(empleado);
 				if(empleado->id>maxId){
 					maxId= empleado->id;
 					pf= fopen("maxId.txt", "w");
@@ -301,4 +283,6 @@ int controller_saveAsBinary(char* path , LinkedList* pArrayListEmployee)
 		fclose(pFile);
     return 1;
 }
+
+
 

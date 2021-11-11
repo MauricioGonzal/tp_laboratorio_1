@@ -97,7 +97,7 @@ int LoadStringValidado(char message[], char loadedString[]){
     scanf("%[^\n]", buffer);
 
     for(int i=0;i<strlen(buffer); i++){
-    	if(isdigit(buffer[i])!=0){
+    	if(!isalpha(buffer[i])){
     		retorno=-1;
     		break;
     	}
@@ -129,14 +129,14 @@ void VerificacionRetorno(int retorno, char mensajeCorrecto[], char mensajeError[
 	}
 }
 
-void VerificarTresRetornos(int retorno, char mensajeCorrecto[], char mensajeNoExiste[], char mensajeError[]){
+void VerificarTresRetornos(int retorno, char mensajeCero[], char mensajeUno[], char mensajeError[]){
 
 	if(retorno==0){
-			printf("%s", mensajeCorrecto);
+			printf("%s", mensajeCero);
 		}
 		else{
 			if(retorno==1){
-				printf("%s", mensajeNoExiste);
+				printf("%s", mensajeUno);
 			}
 			else{
 			printf("%s", mensajeError);

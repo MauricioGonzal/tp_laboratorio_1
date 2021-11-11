@@ -88,11 +88,14 @@ int parser_maxIdFromText(FILE* pFile, int* id){
 	int retorno;
 	int retornoScanf;
 	int auxId;
-	retorno=-1;
 	char auxIdStr[5];
+	retorno=-1;
+
+	if(pFile!=NULL && id!=NULL){
 	retornoScanf=fscanf(pFile, "%s", auxIdStr);
 	auxId= atoi(auxIdStr);
 	*id= auxId;
+	}
 
 	return retornoScanf;
 

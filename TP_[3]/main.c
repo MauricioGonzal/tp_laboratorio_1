@@ -42,12 +42,13 @@ int main()
 
     do{
     	Menu();
-    	option= LoadInt("ingrese una opcion");
+    	LoadIntRange("\nIngrese una opcion:", &option, 10);
         switch(option)
         {
 
         	case 1:
-                if(banderaPrimeraCarga==0){
+
+        		if(banderaPrimeraCarga==0){
         		int retornoScanf;
                 	controller_loadFromText("data.csv",listaEmpleados);
         		pFile= fopen("maxId.txt", "r");
@@ -67,13 +68,16 @@ int main()
                 else{
                 	printf("el archivo ya se encuentra cargado en el sistema.\n");
                 }
+        		banderaNoGuardo=1;
                 break;
             case 2:
+
             	retornoFread=controller_loadFromBinary("data.bin", listaEmpleados);
             	printf("%d", retornoFread);
             	if(retornoFread==-1){
             		printf("Aun no hay informacion en este archivo");
             	}
+            	banderaNoGuardo=1;
             	break;
 
             case 3:
@@ -103,7 +107,7 @@ int main()
             	banderaNoGuardo=0;
             	break;
             case 10:
-            	if(banderaNoGuardo==-1){
+            	if(banderaNoGuardo==1){
             		printf("No ha guardado los cambios. Desea hacerlo?\n 1.SI\n2.NO ");
             		scanf("%d", &opcionGuardar);
             		banderaNoGuardo=0;
@@ -133,6 +137,7 @@ int main()
         }
     }while(opcionSalida != 1);
 
+    printf("El programa ha sido cerrado");
     ll_deleteLinkedList(listaEmpleados);
 
     return 0;
