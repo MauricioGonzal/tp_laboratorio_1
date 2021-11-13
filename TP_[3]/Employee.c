@@ -6,13 +6,18 @@
 
 
 Employee* employee_new(){
+
+
 	Employee* empleado= NULL;
 	empleado= (Employee*) malloc(sizeof(Employee));
-	empleado->id=0;
-	strcpy(empleado->nombre, "");
-	empleado->horasTrabajadas= 0;
-	empleado->sueldo=0;
+	if(empleado!=NULL){
 
+	employee_setId(empleado, 0);
+	strcpy(empleado->nombre, "");
+	employee_setNombre(empleado, "");
+	employee_setHorasTrabajadas(empleado, 0);
+	employee_setSueldo(empleado, 0);
+	}
 
 	return empleado;
 }
@@ -189,6 +194,10 @@ int BuscarMayorId(LinkedList* pArrayEmpleados, int* id ){
 		len= ll_len(pArrayEmpleados);
 		if(pArrayEmpleados!=NULL && id!=NULL){
 			retorno=0;
+			if(len==0){
+				*id=1000;
+			}
+			else{
 		for(int i=0; i<len; i++){
 			empleado= (Employee*)ll_get(pArrayEmpleados, i);
 			if(i==0){
@@ -202,9 +211,11 @@ int BuscarMayorId(LinkedList* pArrayEmpleados, int* id ){
 				}
 			}
 		}
+		*id= mayorId;
 		}
 
-		*id= mayorId;
+
+		}
 
 		return retorno;
 
@@ -226,20 +237,24 @@ int AsignarId (LinkedList* pArrayEmpleados)
 int editEmployee(LinkedList* pArrayListEmployee){
 	int retorno;
 		int idAux;
+		char idStr[5];
 		char sueldo[10];
 		char horasTrabajadas[5];
 		int sueldoInt;
 		int horasInt;
 		int len;
+		int i;
+		char nombre[15];
 		retorno= -1;
 		len= ll_len(pArrayListEmployee);
 		Employee* empleado;
-		idAux= LoadInt("ingrese el id del empleado que desea modificar");
-		for(int i=0; i<len; i++){
-			empleado= (Employee*)ll_get(pArrayListEmployee, i);
+		PedirYValidarNumero(idStr, "ingrese el id del empleado que desea modificar", &idAux);
+		empleado= buscarIdEmpleado(pArrayListEmployee, len, idAux, &i);
 			if(empleado!=NULL){
-				retorno=1;
-				if(idAux== empleado->id ){
+				retorno=0;
+				empleado= (Employee*)ll_get(pArrayListEmployee, i);
+				employee_getNombre(empleado, nombre);
+				printf("El empleado a editar es: %s", nombre );
 				PedirYValidarNumero(sueldo, "ingrese el nuevo sueldo", &sueldoInt);
 
 				employee_setSueldo(empleado, sueldoInt);
@@ -247,10 +262,8 @@ int editEmployee(LinkedList* pArrayListEmployee){
 
 				employee_setHorasTrabajadas(empleado, horasInt);
 				retorno=0;
-				break;
-				}
 			}
-		}
+
 		return retorno;
 }
 
@@ -405,6 +418,47 @@ Employee* buscarIdEmpleado(LinkedList* pArrayListEmployee, int len, int id, int*
 }
 
 
+int guardarArchivo(LinkedList* lista, FILE* pFile, int indicacion, int len){
+	Employee* pEmpleado;
+	int retorno;
+	retorno=-1;
 
+	if(indicacion==0){
+		for(int i=0; i<len; i++){
+					pEmpleado= ll_get(lista, i);
+					if(pEmpleado!= NULL){
+					fwrite(&pEmpleado->id, sizeof(int), 1, pFile);
+					fwrite(&pEmpleado->nombre, sizeof(pEmpleado->nombre), 1, pFile);
+					fwrite(&pEmpleado->horasTrabajadas, sizeof(int), 1, pFile);
+					fwrite(&pEmpleado->sueldo, sizeof(int), 1, pFile);
+					}
+					else{
+						printf("no se pudo");
+					}
+
+				}
+	}
+	else{
+		fprintf(pFile, "id,nombre,horasTrabajadas,sueldo\n");
+				for(int i=0; i<len; i++){
+					pEmpleado= ll_get(lista, i);
+					if(pEmpleado!= NULL){
+
+					fprintf(pFile, "%d, %s, %d, %d\n", pEmpleado->id, pEmpleado->nombre, pEmpleado->horasTrabajadas, pEmpleado->sueldo);
+					}
+					else{
+						printf("no se pudo");
+					}
+					}
+				}
+
+
+
+
+
+
+	return retorno;
+
+}
 
 

@@ -5,7 +5,7 @@
 #include "Employee.h"
 #include "input.h"
 #include "parser.h"
-#define ARCHIVOSINCARGAR "El archivo no esta cargado en el sistema.\n"
+#define ARCHIVOSINCARGAR "No se ha cargado ningun dato en el sistema.\n"
 
 /****************************************************
     Menu:
@@ -29,16 +29,32 @@ int main()
     int option;
     int opcionSalida;
     int banderaPrimeraCarga;
+
     int banderaNoGuardo;
     int maxId;
+    int banderaCambio;
+    int banderaCreoEmpleadoSinCargar;
     int opcionGuardar;
+    int retorno;
+    int retornoScanf;
+    int primerMaxId;
     FILE* pFile;
     FILE* pf;
     banderaPrimeraCarga=0;
     banderaNoGuardo=-1;
     opcionSalida=0;
+    banderaCambio=0;
+
 
     LinkedList* listaEmpleados = ll_newLinkedList();
+
+    pFile= fopen("maxId.txt", "r");
+    if(parser_maxIdFromText(pFile, &primerMaxId)!=1){
+    	primerMaxId=1000;
+    }
+
+    fclose(pFile);
+
 
     do{
     	Menu();
@@ -54,7 +70,7 @@ int main()
         		pFile= fopen("maxId.txt", "r");
         		retornoScanf= parser_maxIdFromText(pFile, &maxId);
         		fclose(pFile);
-        		if(retornoScanf!=0)
+        		if(retornoScanf!=1)
         		{
         			pf= fopen("maxId.txt", "w");
         			BuscarMayorId(listaEmpleados, &maxId);
@@ -69,7 +85,7 @@ int main()
 
                 	printf("El archivo ya se encuentra cargado en el sistema.\n");
                 }
-        		banderaNoGuardo=1;
+
                 break;
             case 2:
             	if(controller_loadFromBinary("data.bin", listaEmpleados)==-1)
@@ -78,24 +94,42 @@ int main()
             	}
             	else
             	{
-            		banderaNoGuardo=1;
+            		banderaPrimeraCarga=1;
             	}
             	break;
 
             case 3:
-            	if(banderaPrimeraCarga==1)
-            	{
+
+            	if(banderaPrimeraCarga==0){
+
+            		pFile= fopen("maxId.txt", "r");
+            		        		retornoScanf= parser_maxIdFromText(pFile, &maxId);
+            		        		fclose(pFile);
+            		        		if(retornoScanf!=1)
+            		        		{
+            		        			pf= fopen("maxId.txt", "w");
+            		        			BuscarMayorId(listaEmpleados, &maxId);
+            		        			fprintf(pf, "%d", maxId);
+            		        			fclose(pf);
+
+            		        		}
+            		banderaCreoEmpleadoSinCargar=1;
+            	}
             	VerificarTresRetornos(controller_addEmployee(listaEmpleados), "El empleado se ha creado correctamente", "Error. Intente nuevamente", "Error. Intente nuevamente");
-            	}
-            	else
-            	{
-            		printf("%s", ARCHIVOSINCARGAR);
-            	}
+            	banderaCambio=1;
+
+
+
+
             	break;
             case 4:
-            	if(banderaPrimeraCarga==1)
+            	if(banderaPrimeraCarga==1 || banderaCreoEmpleadoSinCargar==1)
             	{
-            		VerificarTresRetornos(controller_editEmployee(listaEmpleados), "Empleado modificado correctamente\n", "El empleado con el id ingresado no existe. Verifique los datos.\n", "Error, vuelva a intentar");
+            		retorno= controller_editEmployee(listaEmpleados);
+            		VerificarTresRetornos(retorno, "Empleado modificado correctamente\n", "El empleado con el id ingresado no existe. Verifique los datos.\n", "Error, vuelva a intentar");
+            		if(retorno==0){
+            			banderaCambio=1;
+            		}
             	}
             	else
 				{
@@ -103,11 +137,13 @@ int main()
 				}
             	break;
             case 5:
-            	if(banderaPrimeraCarga==1)
+            	if(banderaPrimeraCarga==1 || banderaCreoEmpleadoSinCargar==1)
 				{
-
-            		VerificarTresRetornos(controller_removeEmployee(listaEmpleados), "empleado eliminado correctamente.\n", "El empleado con el id ingresado no existe, Verifique los datos.\n", "Error, vuelva a intentarlo");
-
+            		retorno= controller_removeEmployee(listaEmpleados);
+            		VerificarTresRetornos(retorno, "empleado eliminado correctamente.\n", "El empleado con el id ingresado no existe, Verifique los datos.\n", "Error, vuelva a intentarlo");
+            		if(retorno==0){
+            			banderaCambio=1;
+            		}
 				}
 				else
 				{
@@ -115,17 +151,21 @@ int main()
 				}
             	break;
             case 6:
-            	if(banderaPrimeraCarga==1)
-				{
+
+            	if(banderaPrimeraCarga==1 || banderaCreoEmpleadoSinCargar==1){
+            	ll_sort(listaEmpleados, employee_compareById, 1);
             		controller_ListEmployee(listaEmpleados);
-				}
+
+
+
+            	}
 				else
 				{
 					printf("%s", ARCHIVOSINCARGAR);
 				}
             	break;
             case 7:
-            	if(banderaPrimeraCarga==1)
+            	if(banderaPrimeraCarga==1 || banderaCreoEmpleadoSinCargar==1)
 				{
             		controller_sortEmployee(listaEmpleados);
 				}
@@ -135,7 +175,7 @@ int main()
 				}
             	break;
             case 8:
-            	if(banderaPrimeraCarga==1)
+            	if(banderaPrimeraCarga==1 || banderaCreoEmpleadoSinCargar==1)
 				{
             		controller_saveAsText("data.csv", listaEmpleados);
 					controller_saveAsBinary("data.bin", listaEmpleados);
@@ -148,7 +188,7 @@ int main()
 
             	break;
             case 9:
-            	if(banderaPrimeraCarga==1)
+            	if(banderaPrimeraCarga==1 || banderaCreoEmpleadoSinCargar==1)
 				{
             		controller_saveAsText("data.csv", listaEmpleados);
 					controller_saveAsBinary("data.bin", listaEmpleados);
@@ -161,7 +201,8 @@ int main()
 
             	break;
             case 10:
-            	if(banderaNoGuardo==1)
+
+            	if(banderaNoGuardo==-1 && banderaCambio==1)
             	{
             		printf("No ha guardado los cambios. Desea hacerlo?\n 1.SI\n2.NO ");
             		scanf("%d", &opcionGuardar);
@@ -169,6 +210,11 @@ int main()
             		if(opcionGuardar==2)
             		{
             			opcionSalida= SalirDelPrograma();
+            			if(opcionSalida==1){
+            				pFile= fopen("maxId.txt", "w");
+            				fprintf(pFile, "%d", primerMaxId);
+            				fclose(pFile);
+            			}
             		}
             		else{
             			printf("8. Guardar los datos de los empleados en el archivo data.csv (modo texto).\n9. Guardar los datos de los empleados en el archivo data.csv (modo binario)");
@@ -192,6 +238,10 @@ int main()
 
         }
     }while(opcionSalida != 1);
+
+
+
+
 
     printf("El programa ha sido cerrado");
     ll_deleteLinkedList(listaEmpleados);

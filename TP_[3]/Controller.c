@@ -87,7 +87,9 @@ int controller_addEmployee(LinkedList* pArrayListEmployee)
 	if(pEmpleado!=NULL)
 	{
 	CrearEmpleado(pEmpleado);
-	parser_maxIdFromText(pFile, &maxId);
+	if(parser_maxIdFromText(pFile, &maxId)!=1){
+		maxId=1000;
+	}
 	fclose(pFile);
 	maxId= maxId+1;
 	pEmpleado->id= maxId;
@@ -96,6 +98,7 @@ int controller_addEmployee(LinkedList* pArrayListEmployee)
 	fclose(pf);
 
 	ll_add(pArrayListEmployee, pEmpleado);
+	printf("Id del empleado creado: %d\n", pEmpleado->id );
 	retorno=0;
 	}
 
@@ -212,6 +215,7 @@ int controller_ListEmployee(LinkedList* pArrayListEmployee)
 		employee_getHorasTrabajadas(empleado, &horas);
 		employee_getSueldo(empleado, &sueldo);
 		printf("%d %s %d %d\n", id, nombre, horas, sueldo);
+
 		retorno=0;
 	}
 	}
@@ -265,29 +269,22 @@ int controller_sortEmployee(LinkedList* pArrayListEmployee)
  */
 int controller_saveAsText(char* path , LinkedList* pArrayListEmployee)
 {
-	FILE* pFile= fopen(path, "w");
-		Employee* pEmpleado;
-		int len= ll_len(pArrayListEmployee);
-		if(pFile!=NULL){
-			fprintf(pFile, "id,nombre,horasTrabajadas,sueldo\n");
-		for(int i=0; i<len; i++){
-			pEmpleado= ll_get(pArrayListEmployee, i);
-			if(pEmpleado!= NULL){
+	int retorno;
+	int len;
+	retorno=-1;
+	FILE* pFile;
+	pFile= fopen(path, "w");
 
-			fprintf(pFile, "%d, %s, %d, %d\n", pEmpleado->id, pEmpleado->nombre, pEmpleado->horasTrabajadas, pEmpleado->sueldo);
+		len= ll_len(pArrayListEmployee);
+		if(pFile!=NULL){
+			if(guardarArchivo(pArrayListEmployee, pFile, 1, len)==0)
+			{
+				retorno=0;
 			}
-			else{
-				printf("no se pudo");
-			}
-			}
-		}
-		else{
-			printf("no");
-		}
 
 		fclose(pFile);
-
-    return 1;
+		}
+    return retorno;
 }
 
 /** \brief Guarda los datos de los empleados en el archivo data.csv (modo binario).
@@ -299,34 +296,23 @@ int controller_saveAsText(char* path , LinkedList* pArrayListEmployee)
  */
 int controller_saveAsBinary(char* path , LinkedList* pArrayListEmployee)
 {
+	int retorno;
+	retorno=-1;
+
 	FILE* pFile= fopen(path, "wb");
-		Employee* pEmpleado;
+
 		int len= ll_len(pArrayListEmployee);
-		printf("%d", len);
+
 		if(pFile!=NULL){
+			if(guardarArchivo(pArrayListEmployee, pFile, 0, len)==0){
+				retorno=0;
+			}
 
-		for(int i=0; i<len; i++){
-			pEmpleado= ll_get(pArrayListEmployee, i);
-			if(pEmpleado!= NULL){
-			fwrite(&pEmpleado->id, sizeof(int), 1, pFile);
-			fwrite(&pEmpleado->nombre, sizeof(pEmpleado->nombre), 1, pFile);
-			fwrite(&pEmpleado->horasTrabajadas, sizeof(int), 1, pFile);
-			fwrite(&pEmpleado->sueldo, sizeof(int), 1, pFile);
-			}
-			else{
-				printf("no se pudo");
-			}
-			}
-		}
-		else{
-			printf("no");
-		}
 
-		len= ll_len(pArrayListEmployee);
-		printf("%d", len);
 
 		fclose(pFile);
-    return 1;
+		}
+    return retorno;
 }
 
 

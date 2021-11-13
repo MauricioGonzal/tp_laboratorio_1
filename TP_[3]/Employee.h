@@ -17,7 +17,7 @@ typedef struct
 }Employee;
 
 /// @fn Employee employee_new*()
-/// @brief
+/// @brief	reserva memoria dinamica para un dato de tipo employee
 ///
 /// @return
 Employee* employee_new();
@@ -174,5 +174,6 @@ int elegirCriterioDeOrdenamiento(int *opcion, int* opcionDos);
 
 int buscarId(Employee* this, int id);
 Employee* buscarIdEmpleado(LinkedList* pArrayListEmployee, int len, int id, int* auxI);
+int guardarArchivo(LinkedList* lista, FILE* pFile, int indicacion, int len);
 
 #endif // employee_H_INCLUDED
