@@ -37,11 +37,12 @@ int getString(char* cadena, char* mensaje, char* mensajeError, int longitud){
 				strcpy(cadena, bufferString);
 				retorno=0;
 			}
+		}
 			else{
 
 				printf("%s", mensajeError);
 			}
-		}
+
 	}
 
 	return retorno;
@@ -154,35 +155,6 @@ void Menu (){
 }
 
 
-/*int ordenarArrayInt(int* pArray, int limite){
-	int flagSwap;
-	int i;
-	int contador;
-	int retorno;
-	int buffer;
-	int nuevoLimite;
-
-	if(pArray!= NULL && limite>0)
-	{
-		nuevoLimite= nuevoLimite-1;
-		do{
-			flagSwap=0;
-			for(i=0;i<limite-1;i++){
-				contador++;
-				if(pArray[i]<pArray[i+1]){
-					flagSwap=1;
-					buffer = pArray[i];
-					pArray[i]= pArray[i+1];
-					pArray[i+1]= buffer;
-				}
-				nuevoLimite--;
-			}
-		}while(flagSwap);
-		retorno=contador;
-	}
-	return retorno;
-}*/
-
 int ValidarNumero(char numeros[]){
 	int retorno=0;
 	for(int i=0;i<strlen(numeros);i++){
@@ -207,59 +179,17 @@ int PedirYValidarNumero(char numeros[], char mensaje[], int* numeroConvertido){
 		fflush(stdin);
 		scanf("%[^\n]", buffer);
 
-		if(ValidarNumero(buffer)==0){
+		if(ValidarNumero(buffer)==0)
+		{
 			strcpy(numeros, buffer);
 			*numeroConvertido= atoi(numeros);
 			retorno=0;
 		}
-
-
-
-
-
 	}while(retorno!=0);
-
-
 
 	return retorno;
 
 }
-
-
-/*int controller_saveAsText(char* path , LinkedList* pArrayListEmployee)
-{
-	//CORROBORAR
-
-	int output = -1;
-	FILE* pFile = NULL;
-	Employee* pEmpleado;
-	int len;
-	int id;
-	char nombre[NAME_LEN];
-	int horasTrabajadas;
-	int sueldo;
-
-	if(path != NULL && pArrayListEmployee != NULL)
-	{
-		len = ll_len(pArrayListEmployee);
-		pFile = fopen(path, "w"); //verificar si pude abrirlo pFile!= NULL
-		fprintf(pFile, "id,nombre,horasTrabajadas,sueldo\n");
-		for(int i = 0; i < len; i++)
-		{
-
-pEmpleado = (Employee*) ll_get(pArrayListEmployee, i);
-			if(employee_getAllTheGets(pEmpleado, nombre, &horasTrabajadas, &sueldo, &id) == 0)
-			{
-				fprintf(pFile,"%d,%s,%d,%d\n", id, nombre, horasTrabajadas, sueldo);
-			 }
-		}
-		printf(SAVE_DATA);
-		output = 0;
-
-	}
-	fclose(pFile);
-    return output;
-}*/
 
 int validarRango(int numero, int minimo, int maximo){
 	int retorno;
@@ -271,4 +201,25 @@ int validarRango(int numero, int minimo, int maximo){
 	}
 
 	return retorno;
+}
+
+int PedirYValidarNumeroMejorado(char mensaje[], int* numeroConvertido){
+	int retorno;
+	char buffer[11];
+	retorno=-1;
+	do{
+		printf("%s", mensaje);
+		fflush(stdin);
+		scanf("%[^\n]", buffer);
+
+		if(ValidarNumero(buffer)==0)
+		{
+
+			*numeroConvertido= atoi(buffer);
+			retorno=0;
+		}
+	}while(retorno!=0);
+
+	return retorno;
+
 }

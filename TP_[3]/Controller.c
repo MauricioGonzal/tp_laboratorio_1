@@ -5,13 +5,7 @@
 #include "parser.h"
 
 
-/** \brief Carga los datos de los empleados desde el archivo data.csv (modo texto).
- *
- * \param path char*
- * \param pArrayListEmployee LinkedList*
- * \return int
- *
- */
+
 int controller_loadFromText(char* path , LinkedList* pArrayListEmployee)
 {
 	int retorno;
@@ -21,7 +15,10 @@ int controller_loadFromText(char* path , LinkedList* pArrayListEmployee)
 	if(pFile!=NULL && pArrayListEmployee!=NULL && path!=NULL)
 	{
 		retorno=1;
-		parser_EmployeeFromText(pFile, pArrayListEmployee);
+		if(parser_EmployeeFromText(pFile, pArrayListEmployee)==0)
+		{
+			retorno=0;;
+		}
 	}
 
 	fclose(pFile);
@@ -41,21 +38,22 @@ int controller_loadFromBinary(char* path , LinkedList* pArrayListEmployee)
     FILE* pFile;
     FILE* pF;
     Employee empleadoAux;
+    retorno=0;
     pF=fopen(path, "rb");
-    if(fread(&empleadoAux, sizeof(Employee), 1, pF)!=1){
+    if(path!=NULL && pArrayListEmployee!=NULL && fread(&empleadoAux, sizeof(Employee), 1, pF)!=1){
     	retorno=-1;
     }
     fclose(pF);
 
     if(retorno!=-1){
     pFile= fopen(path, "rb");
-    if(pFile!=NULL){
-    if(parser_EmployeeFromBinary(pFile, pArrayListEmployee)!=0){
-    	printf("no se pudo convertir");
+    if(pFile!=NULL && parser_EmployeeFromBinary(pFile, pArrayListEmployee)!=0)
+    {
+    	retorno=1;
     }
     fclose(pFile);
     }
-    }
+
 
 
 	return retorno;
@@ -84,9 +82,10 @@ int controller_addEmployee(LinkedList* pArrayListEmployee)
 	retorno=1;
 
 	pEmpleado= employee_new();
-	if(pEmpleado!=NULL)
+	if(pEmpleado!=NULL && CrearEmpleado(pEmpleado)==0)
 	{
-	CrearEmpleado(pEmpleado);
+
+
 	if(parser_maxIdFromText(pFile, &maxId)!=1){
 		maxId=1000;
 	}
@@ -195,30 +194,17 @@ int controller_ListEmployee(LinkedList* pArrayListEmployee)
 {
 	int len;
 	int retorno;
-	Employee* empleado;
-	int id;
-	char nombre[60];
-	int sueldo;
-	int horas;
+
 	len= ll_len(pArrayListEmployee);
 	retorno=-1;
 
 	if(pArrayListEmployee!=NULL)
 	{
-	for(int i=0; i<len; i++)
-	{
-		empleado= ll_get(pArrayListEmployee, i);
-		if(empleado!=NULL)
-		{
-		employee_getId(empleado, &id);
-		employee_getNombre(empleado, nombre);
-		employee_getHorasTrabajadas(empleado, &horas);
-		employee_getSueldo(empleado, &sueldo);
-		printf("%d %s %d %d\n", id, nombre, horas, sueldo);
-
+		retorno=1;
+	if(employee_listarEmpleados(pArrayListEmployee, len)==0){
 		retorno=0;
 	}
-	}
+
 	}
 
     return retorno;
@@ -238,7 +224,9 @@ int controller_sortEmployee(LinkedList* pArrayListEmployee)
 	int retorno;
 	retorno=-1;
 	if(pArrayListEmployee!=NULL){
-	elegirCriterioDeOrdenamiento(&opcion, &opcionDos);
+		retorno=1;
+		if(elegirCriterioDeOrdenamiento(&opcion, &opcionDos)==0)
+		{
 	retorno=0;
 	switch(opcion){
 	case 1:
@@ -255,6 +243,7 @@ int controller_sortEmployee(LinkedList* pArrayListEmployee)
 		break;
 
 	}
+		}
 	}
 
     return retorno;
@@ -273,17 +262,19 @@ int controller_saveAsText(char* path , LinkedList* pArrayListEmployee)
 	int len;
 	retorno=-1;
 	FILE* pFile;
+
+	if(path!=NULL && pArrayListEmployee!=NULL)
+	{
 	pFile= fopen(path, "w");
-
+	retorno=1;
 		len= ll_len(pArrayListEmployee);
-		if(pFile!=NULL){
-			if(guardarArchivo(pArrayListEmployee, pFile, 1, len)==0)
-			{
-				retorno=0;
-			}
+		if(pFile!=NULL && guardarArchivo(pArrayListEmployee, pFile, 1, len)==0){
 
-		fclose(pFile);
+			retorno=0;
+
 		}
+		fclose(pFile);
+	}
     return retorno;
 }
 
@@ -297,21 +288,23 @@ int controller_saveAsText(char* path , LinkedList* pArrayListEmployee)
 int controller_saveAsBinary(char* path , LinkedList* pArrayListEmployee)
 {
 	int retorno;
+	int len;
+	FILE* pFile;
 	retorno=-1;
 
-	FILE* pFile= fopen(path, "wb");
+	if(path!=NULL && pArrayListEmployee!=NULL)
+	{
+	pFile= fopen(path, "wb");
 
-		int len= ll_len(pArrayListEmployee);
+		len = ll_len(pArrayListEmployee);
 
-		if(pFile!=NULL){
-			if(guardarArchivo(pArrayListEmployee, pFile, 0, len)==0){
-				retorno=0;
-			}
+		if(pFile!=NULL && guardarArchivo(pArrayListEmployee, pFile, 0, len)==0)
+		{
+			retorno=0;
 
-
-
-		fclose(pFile);
 		}
+		fclose(pFile);
+	}
     return retorno;
 }
 

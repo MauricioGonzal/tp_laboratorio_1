@@ -116,14 +116,14 @@ int CrearEmpleado(Employee* pEmpleado);
 /// @param pArrayEmpleados
 /// @param id
 /// @return
-int BuscarMayorId(LinkedList* pArrayEmpleados, int* id );
+//int BuscarMayorId(LinkedList* pArrayEmpleados, int* id );
 
 /// @fn int AsignarId(LinkedList*)
 /// @brief
 ///
 /// @param pArrayEmpleados
 /// @return
-int AsignarId (LinkedList* pArrayEmpleados);
+//int AsignarId (LinkedList* pArrayEmpleados);
 
 /// @fn int employee_compareByName(void*, void*)
 /// @brief
@@ -175,5 +175,7 @@ int elegirCriterioDeOrdenamiento(int *opcion, int* opcionDos);
 int buscarId(Employee* this, int id);
 Employee* buscarIdEmpleado(LinkedList* pArrayListEmployee, int len, int id, int* auxI);
 int guardarArchivo(LinkedList* lista, FILE* pFile, int indicacion, int len);
+int employee_listarEmpleados(LinkedList* lista, int len);
+void employee_listarUnEmpleado(Employee* empleado);
 
 #endif // employee_H_INCLUDED

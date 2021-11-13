@@ -23,4 +23,5 @@ int ValidarNumero(char numeros[]);
 int validarStringLetras(char string[]);
 int PedirYValidarNumero(char numeros[], char mensaje[], int* numeroConvertido);
 int validarRango(int numero, int minimo, int maximo);
+int PedirYValidarNumeroMejorado(char mensaje[], int* numeroConvertido);
 #endif /* INPUT_H_ */

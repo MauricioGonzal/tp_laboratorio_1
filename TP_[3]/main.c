@@ -29,7 +29,7 @@ int main()
     int option;
     int opcionSalida;
     int banderaPrimeraCarga;
-
+    int banderaSistemaVacio;
     int banderaNoGuardo;
     int maxId;
     int banderaCambio;
@@ -41,6 +41,7 @@ int main()
     FILE* pFile;
     FILE* pf;
     banderaPrimeraCarga=0;
+    banderaSistemaVacio=0;
     banderaNoGuardo=-1;
     opcionSalida=0;
     banderaCambio=0;
@@ -70,15 +71,16 @@ int main()
         		pFile= fopen("maxId.txt", "r");
         		retornoScanf= parser_maxIdFromText(pFile, &maxId);
         		fclose(pFile);
-        		if(retornoScanf!=1)
+        		if(retornoScanf==1)
         		{
         			pf= fopen("maxId.txt", "w");
-        			BuscarMayorId(listaEmpleados, &maxId);
+        			//BuscarMayorId(listaEmpleados, &maxId);
         			fprintf(pf, "%d", maxId);
         			fclose(pf);
 
         		}
                 banderaPrimeraCarga=1;
+                banderaSistemaVacio=1;
 
                 }
                 else{
@@ -95,6 +97,7 @@ int main()
             	else
             	{
             		banderaPrimeraCarga=1;
+            		banderaSistemaVacio=1;
             	}
             	break;
 
@@ -105,17 +108,18 @@ int main()
             		pFile= fopen("maxId.txt", "r");
             		        		retornoScanf= parser_maxIdFromText(pFile, &maxId);
             		        		fclose(pFile);
-            		        		if(retornoScanf!=1)
+            		        		if(retornoScanf==1)
             		        		{
             		        			pf= fopen("maxId.txt", "w");
-            		        			BuscarMayorId(listaEmpleados, &maxId);
+
             		        			fprintf(pf, "%d", maxId);
             		        			fclose(pf);
 
             		        		}
             		banderaCreoEmpleadoSinCargar=1;
+            		banderaSistemaVacio=1;
             	}
-            	VerificarTresRetornos(controller_addEmployee(listaEmpleados), "El empleado se ha creado correctamente", "Error. Intente nuevamente", "Error. Intente nuevamente");
+            	VerificarTresRetornos(controller_addEmployee(listaEmpleados), "El empleado se ha creado correctamente", "\nIntente nuevamente", "Error. Intente nuevamente");
             	banderaCambio=1;
 
 
@@ -152,21 +156,33 @@ int main()
             	break;
             case 6:
 
-            	if(banderaPrimeraCarga==1 || banderaCreoEmpleadoSinCargar==1){
-            	ll_sort(listaEmpleados, employee_compareById, 1);
-            		controller_ListEmployee(listaEmpleados);
+        		if(banderaCreoEmpleadoSinCargar==1 && banderaPrimeraCarga==1){
+        		ll_sort(listaEmpleados, employee_compareById, 1);
+        		controller_ListEmployee(listaEmpleados);
+        		}else{
 
 
 
-            	}
+
+
+        		if(banderaSistemaVacio==1){
+        			controller_ListEmployee(listaEmpleados);
+        		}
+
+
 				else
 				{
+					if(banderaSistemaVacio==0)
+					{
 					printf("%s", ARCHIVOSINCARGAR);
+					}
 				}
+        		}
             	break;
             case 7:
             	if(banderaPrimeraCarga==1 || banderaCreoEmpleadoSinCargar==1)
 				{
+            		banderaCreoEmpleadoSinCargar=0;
             		controller_sortEmployee(listaEmpleados);
 				}
 				else
@@ -238,10 +254,6 @@ int main()
 
         }
     }while(opcionSalida != 1);
-
-
-
-
 
     printf("El programa ha sido cerrado");
     ll_deleteLinkedList(listaEmpleados);

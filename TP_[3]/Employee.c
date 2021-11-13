@@ -4,7 +4,10 @@
 #include <string.h>
 #include "Employee.h"
 
-
+/// @fn Employee employee_new*()
+/// @brief reserva memoria dinamica para un dato de tipo empleado e inicializa sus campos
+///
+/// @return el puntero a employee inicializado
 Employee* employee_new(){
 
 
@@ -13,7 +16,6 @@ Employee* employee_new(){
 	if(empleado!=NULL){
 
 	employee_setId(empleado, 0);
-	strcpy(empleado->nombre, "");
 	employee_setNombre(empleado, "");
 	employee_setHorasTrabajadas(empleado, 0);
 	employee_setSueldo(empleado, 0);
@@ -22,7 +24,14 @@ Employee* employee_new(){
 	return empleado;
 }
 
-
+/// @fn Employee employee_newParametros*(char*, char*, char*, char*)
+/// @brief cambia los campos inicializados del employee por los datos de los parametros
+///
+/// @param idStr id en formato string
+/// @param nombreStr nombre
+/// @param horasTrabajadasStr horas trabajadas en formato string
+/// @param sueldo en formato string
+/// @return el puntero a employee creado
 Employee* employee_newParametros(char* idStr,char* nombreStr,char* horasTrabajadasStr, char* sueldo){
 	Employee* pEmpleado= NULL;
 	pEmpleado= employee_new();
@@ -35,6 +44,11 @@ Employee* employee_newParametros(char* idStr,char* nombreStr,char* horasTrabajad
 	return pEmpleado;
 }
 
+/// @fn int employee_delete(Employee*)
+/// @brief libera el espacio del empleado eliminado
+///
+/// @param this puntero de tipo employee
+/// @return -1 si el puntero parametro es NULL o 0 si esta todo ok
 int employee_delete(Employee* this){
 
 
@@ -49,7 +63,12 @@ int employee_delete(Employee* this){
 }
 
 
-
+/// @fn int employee_setId(Employee*, int)
+/// @brief setea el campo id
+///
+/// @param this puntero de tipo employee
+/// @param id valor por el que se va a reemplazar el dato del campo id
+/// @return -1 si el puntero parametro es NULL o 0 si todo ok
 int employee_setId(Employee* this,int id){
 	int retorno;
 	retorno=-1;
@@ -62,6 +81,12 @@ int employee_setId(Employee* this,int id){
 
 }
 
+/// @fn int employee_getId(Employee*, int*)
+/// @brief obtiene el campo id
+///
+/// @param this puntero de tipo employee
+/// @param id puntero de tipo entero en donde se va a colocar el valor obtenido
+/// @return -1 si el puntero parametro es NULL o 0 si todo ok
 int employee_getId(Employee* this,int* id){
 	int retorno;
 	retorno=-1;
@@ -75,6 +100,12 @@ int employee_getId(Employee* this,int* id){
 
 }
 
+/// @fn int employee_setNombre(Employee*, char*)
+/// @brief setea el campo nombre
+///
+/// @param this puntero de tipo employee
+/// @param nombre valor que va a reemplazar al que se encuentra en el campo nombre
+/// @return -1 si el puntero parametro es NULL o 0 si todo ok
 int employee_setNombre(Employee* this,char* nombre){
 	int retorno;
 		retorno=-1;
@@ -86,6 +117,12 @@ int employee_setNombre(Employee* this,char* nombre){
 		return retorno;
 }
 
+/// @fn int employee_getNombre(Employee*, char*)
+/// @brief obtiene el dato que esta en el campo nombre
+///
+/// @param this puntero de tipo employee
+/// @param nombre puntero de tipo char* en donde se va a colocar el valor obtenido
+/// @return -1 si el puntero parametro es NULL o 0 si todo ok
 int employee_getNombre(Employee* this,char* nombre){
 	int retorno;
 		retorno=-1;
@@ -98,6 +135,12 @@ int employee_getNombre(Employee* this,char* nombre){
 
 }
 
+/// @fn int employee_setHorasTrabajadas(Employee*, int)
+/// @brief setea el campo horasTrabajadas
+///
+/// @param this puntero de tipo employee
+/// @param horasTrabajadas  valor que va a reemplazar al que se encuentra en el campo horasTrabajadas
+/// @return -1 si el puntero parametro es NULL o 0 si todo ok
 int employee_setHorasTrabajadas(Employee* this,int horasTrabajadas){
 	int retorno;
 			retorno=-1;
@@ -109,6 +152,12 @@ int employee_setHorasTrabajadas(Employee* this,int horasTrabajadas){
 			return retorno;
 }
 
+/// @fn int employee_getHorasTrabajadas(Employee*, int*)
+/// @brief obtiene el valor que se encuentra en el campo horasTrabajadas
+///
+/// @param this puntero de tipo employee
+/// @param horasTrabajadas nombre puntero de tipo int en donde se va a colocar el valor obtenido
+/// @return -1 si el puntero parametro es NULL o 0 si todo ok
 int employee_getHorasTrabajadas(Employee* this,int* horasTrabajadas){
 	int retorno;
 		retorno=-1;
@@ -120,6 +169,12 @@ int employee_getHorasTrabajadas(Employee* this,int* horasTrabajadas){
 		return retorno;
 }
 
+/// @fn int employee_setSueldo(Employee*, int)
+/// @brief setea el campo sueldo
+///
+/// @param this ppuntero de tipo employee
+/// @param sueldo valor que va a reemplazar al que se encuentra en el campo sueldo
+/// @return -1 si el puntero parametro es NULL o 0 si todo ok
 int employee_setSueldo(Employee* this,int sueldo){
 	int retorno;
 				retorno=-1;
@@ -131,6 +186,12 @@ int employee_setSueldo(Employee* this,int sueldo){
 				return retorno;
 }
 
+/// @fn int employee_getSueldo(Employee*, int*)
+/// @brief obtiene el valor que se encuentra en el campo sueldo
+///
+/// @param this puntero de tipo employee
+/// @param sueldo puntero de tipo int donde se va a colocar el valor obtenido
+/// @return -1 si el puntero parametro es NULL o 0 si todo ok
 int employee_getSueldo(Employee* this,int* sueldo){
 	int retorno;
 			retorno=-1;
@@ -142,6 +203,11 @@ int employee_getSueldo(Employee* this,int* sueldo){
 			return retorno;
 }
 
+/// @fn int CrearEmpleado(Employee*)
+/// @brief setea los campos del empleado pasado como parametro
+///
+/// @param pEmpleado puntero de tipo employee
+/// @return -1 si el puntero parametro es NULL, 1 si el usuario ingresa numeros en el campo nombre y 0 si esta todo ok
 int CrearEmpleado(Employee* pEmpleado){
 	int retorno;
 
@@ -159,7 +225,7 @@ int CrearEmpleado(Employee* pEmpleado){
 		retorno=1;
 		if(getString(auxNombre, "Ingrese el nombre del nuevo empleado.", "Error. Dato incorrecto", sizeof(auxNombre))==0)
 		{
-
+			retorno=0;
 			employee_setNombre(pEmpleado, auxNombre);
 
 			PedirYValidarNumero(auxSueldo, "Ingrese el nuevo sueldo", &sueldo);
@@ -182,8 +248,13 @@ int CrearEmpleado(Employee* pEmpleado){
 	return retorno;
 }
 
-
-int BuscarMayorId(LinkedList* pArrayEmpleados, int* id ){
+/// @fn int BuscarMayorId(LinkedList*, int*)
+/// @brief
+///
+/// @param pArrayEmpleados
+/// @param id
+/// @return
+/*int BuscarMayorId(LinkedList* pArrayEmpleados, int* id ){
 
 	int retorno;
 	int auxId;
@@ -232,7 +303,7 @@ int AsignarId (LinkedList* pArrayEmpleados)
 	}
 
 	return id;
-}
+}*/
 
 int editEmployee(LinkedList* pArrayListEmployee){
 	int retorno;
@@ -248,6 +319,10 @@ int editEmployee(LinkedList* pArrayListEmployee){
 		retorno= -1;
 		len= ll_len(pArrayListEmployee);
 		Employee* empleado;
+
+		if(pArrayListEmployee!=NULL)
+		{
+		retorno=1;
 		PedirYValidarNumero(idStr, "ingrese el id del empleado que desea modificar", &idAux);
 		empleado= buscarIdEmpleado(pArrayListEmployee, len, idAux, &i);
 			if(empleado!=NULL){
@@ -263,6 +338,7 @@ int editEmployee(LinkedList* pArrayListEmployee){
 				employee_setHorasTrabajadas(empleado, horasInt);
 				retorno=0;
 			}
+		}
 
 		return retorno;
 }
@@ -461,4 +537,38 @@ int guardarArchivo(LinkedList* lista, FILE* pFile, int indicacion, int len){
 
 }
 
+void employee_listarUnEmpleado(Employee* empleado){
 
+	int id;
+	int horas;
+	char nombre[51];
+	int sueldo;
+
+			employee_getId(empleado, &id);
+			employee_getNombre(empleado, nombre);
+			employee_getHorasTrabajadas(empleado, &horas);
+			employee_getSueldo(empleado, &sueldo);
+			printf("%d %s %d %d\n", id, nombre, horas, sueldo);
+
+
+
+
+
+}
+
+int employee_listarEmpleados(LinkedList* lista, int len){
+	int retorno;
+	Employee* empleado;
+	retorno=-1;
+	for(int i=0; i<len; i++)
+		{
+			empleado= ll_get(lista, i);
+			if(empleado!=NULL){
+				retorno= 0;
+				employee_listarUnEmpleado(empleado);
+			}
+
+		}
+
+	return retorno;
+}
