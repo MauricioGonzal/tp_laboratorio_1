@@ -207,7 +207,7 @@ int main()
             	if(banderaPrimeraCarga==1 || banderaCreoEmpleadoSinCargar==1)
 				{
             		controller_saveAsText("data.csv", listaEmpleados);
-
+            		controller_saveAsBinary("data.bin", listaEmpleados);
 					banderaNoGuardo=0;
 				}
 				else
@@ -224,7 +224,8 @@ int main()
             	if(banderaPrimeraCarga==1 || banderaCreoEmpleadoSinCargar==1)
 				{
 
-					controller_saveAsBinary("data.bin", listaEmpleados);
+            		controller_saveAsText("data.csv", listaEmpleados);
+            		controller_saveAsBinary("data.bin", listaEmpleados);
 					banderaNoGuardo=0;
 				}
 				else
