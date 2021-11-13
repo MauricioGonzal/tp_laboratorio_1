@@ -26,7 +26,7 @@ int getString(char* cadena, char* mensaje, char* mensajeError, int longitud){
 	printf("%s", mensaje);
 
 	if(cadena!= NULL && longitud>0){
-
+		retorno=1;
 		fflush(stdin);
 		if(fgets(bufferString, sizeof(bufferString), stdin)!= NULL && validarStringLetras(bufferString)==0){
 
@@ -60,39 +60,6 @@ float LoadFloat(char message[]){
     return option;
 }
 
-int LoadInt(char message[]){
-    int option;
-    printf("%s\n", message);
-    scanf("%d", &option);
-
-    return option;
-}
-
-int LoadIntRange(char message[], int* opcion, int num){
-	int retorno;
-	int option;
-    if(message!=NULL && opcion!= NULL){
-	printf("%s", message);
-    scanf("%d", &option);
-    *opcion= option;
-    while(option <0 || option > num){
-        printf("\nERROR.%s", message);
-        scanf("%d", &option);
-        }
-    retorno=0;
-    }
-    return retorno;
-}
-
-void LoadString(char message[], char loadedString[]){
-
-
-	printf("%s\n", message);
-    fflush(stdin);
-    scanf("%[^\n]", loadedString);
-
-}
-
 int validarStringLetras(char string[]){
 
     int retorno;
@@ -105,15 +72,14 @@ int validarStringLetras(char string[]){
     		break;
     	}
     }
-    printf("%d", retorno);
+
 
     return retorno;
 }
 
 int SalirDelPrograma(){
 	int opcion;
-	printf("seguro desea salir del programa?\n1.SI\n2.NO");
-	scanf("%d", &opcion);
+	PedirYValidarNumeroMejorado("seguro desea salir del programa?\n1.SI\n2.NO", &opcion, 1, 2);
 
 	return opcion;
 }
@@ -160,33 +126,11 @@ int ValidarNumero(char numeros[]){
 	for(int i=0;i<strlen(numeros);i++){
 
 		if(!isdigit(numeros[i])){
-			printf("\nEl dato ingresado no es numerico.\n");
+			printf("\nEl dato ingresado no es numerico/entero.\n");
 			retorno=-1;
 			break;
 		}
 	}
-	return retorno;
-
-}
-
-
-int PedirYValidarNumero(char numeros[], char mensaje[], int* numeroConvertido){
-	int retorno;
-	char buffer[11];
-	retorno=-1;
-	do{
-		printf("%s", mensaje);
-		fflush(stdin);
-		scanf("%[^\n]", buffer);
-
-		if(ValidarNumero(buffer)==0)
-		{
-			strcpy(numeros, buffer);
-			*numeroConvertido= atoi(numeros);
-			retorno=0;
-		}
-	}while(retorno!=0);
-
 	return retorno;
 
 }
@@ -203,7 +147,7 @@ int validarRango(int numero, int minimo, int maximo){
 	return retorno;
 }
 
-int PedirYValidarNumeroMejorado(char mensaje[], int* numeroConvertido){
+int PedirYValidarNumeroMejorado(char mensaje[], int* numeroConvertido, int min, int max){
 	int retorno;
 	char buffer[11];
 	retorno=-1;
@@ -214,9 +158,36 @@ int PedirYValidarNumeroMejorado(char mensaje[], int* numeroConvertido){
 
 		if(ValidarNumero(buffer)==0)
 		{
+			retorno=1;
+
+			*numeroConvertido= atoi(buffer);
+			if(validarRango(*numeroConvertido, min, max)==0){
+				retorno=0;
+			}
+
+		}
+	}while(retorno!=0);
+
+	return retorno;
+
+}
+
+int PedirYValidarNumero(char mensaje[], int* numeroConvertido){
+	int retorno;
+	char buffer[11];
+	retorno=-1;
+	do{
+		printf("%s", mensaje);
+		fflush(stdin);
+		scanf("%[^\n]", buffer);
+
+		if(ValidarNumero(buffer)==0)
+		{
+			retorno=1;
 
 			*numeroConvertido= atoi(buffer);
 			retorno=0;
+
 		}
 	}while(retorno!=0);
 

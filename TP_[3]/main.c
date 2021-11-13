@@ -35,13 +35,16 @@ int main()
     int banderaCambio;
     int banderaCreoEmpleadoSinCargar;
     int opcionGuardar;
+    int banderaSoloCargaManual;
     int retorno;
     int retornoScanf;
     int primerMaxId;
+    int opcionGuardado;
     FILE* pFile;
     FILE* pf;
     banderaPrimeraCarga=0;
     banderaSistemaVacio=0;
+    banderaSoloCargaManual=0;
     banderaNoGuardo=-1;
     opcionSalida=0;
     banderaCambio=0;
@@ -58,12 +61,13 @@ int main()
 
 
     do{
+
     	Menu();
-    	LoadIntRange("\nIngrese una opcion:", &option, 10);
+    	PedirYValidarNumeroMejorado("\nIngrese una opcion:", &option, 1, 10);
         switch(option)
         {
         	case 1:
-
+        		banderaSoloCargaManual=0;
         		if(banderaPrimeraCarga==0)
         		{
         		int retornoScanf;
@@ -74,7 +78,7 @@ int main()
         		if(retornoScanf==1)
         		{
         			pf= fopen("maxId.txt", "w");
-        			//BuscarMayorId(listaEmpleados, &maxId);
+
         			fprintf(pf, "%d", maxId);
         			fclose(pf);
 
@@ -92,19 +96,21 @@ int main()
             case 2:
             	if(controller_loadFromBinary("data.bin", listaEmpleados)==-1)
             	{
-            		printf("\nError. El archivo no puede ser creado sin antes guardarse en formato binario");
+            		printf("\nError. El archivo no puede ser creado sin antes guardarse en formato binario.\n");
             	}
             	else
             	{
+
             		banderaPrimeraCarga=1;
             		banderaSistemaVacio=1;
+            		banderaSoloCargaManual=0;
             	}
             	break;
 
             case 3:
 
             	if(banderaPrimeraCarga==0){
-
+            		banderaSoloCargaManual=1;
             		pFile= fopen("maxId.txt", "r");
             		        		retornoScanf= parser_maxIdFromText(pFile, &maxId);
             		        		fclose(pFile);
@@ -119,7 +125,7 @@ int main()
             		banderaCreoEmpleadoSinCargar=1;
             		banderaSistemaVacio=1;
             	}
-            	VerificarTresRetornos(controller_addEmployee(listaEmpleados), "El empleado se ha creado correctamente", "\nIntente nuevamente", "Error. Intente nuevamente");
+            	VerificarTresRetornos(controller_addEmployee(listaEmpleados), "El empleado se ha creado correctamente\n", "\nIntente nuevamente", "Error. Intente nuevamente\n");
             	banderaCambio=1;
 
 
@@ -156,16 +162,19 @@ int main()
             	break;
             case 6:
 
+
+
         		if(banderaCreoEmpleadoSinCargar==1 && banderaPrimeraCarga==1){
         		ll_sort(listaEmpleados, employee_compareById, 1);
-        		controller_ListEmployee(listaEmpleados);
-        		}else{
+
+        		}
 
 
 
 
 
         		if(banderaSistemaVacio==1){
+        			printf("ID, NOMBRE, HORAS, SUELDO\n");
         			controller_ListEmployee(listaEmpleados);
         		}
 
@@ -177,7 +186,7 @@ int main()
 					printf("%s", ARCHIVOSINCARGAR);
 					}
 				}
-        		}
+
             	break;
             case 7:
             	if(banderaPrimeraCarga==1 || banderaCreoEmpleadoSinCargar==1)
@@ -191,22 +200,30 @@ int main()
 				}
             	break;
             case 8:
+            	if(banderaSoloCargaManual==1){
+            		printf("Antes de poder guardar primero debe cargar el archivo en el sistema");
+            	}
+            	else{
             	if(banderaPrimeraCarga==1 || banderaCreoEmpleadoSinCargar==1)
 				{
             		controller_saveAsText("data.csv", listaEmpleados);
-					controller_saveAsBinary("data.bin", listaEmpleados);
+
 					banderaNoGuardo=0;
 				}
 				else
 				{
 					printf("%s", ARCHIVOSINCARGAR);
 				}
-
+            	}
             	break;
             case 9:
+            	if(banderaSoloCargaManual==1){
+            		printf("Antes de poder guardar primero debe cargar el archivo en el sistema\n");
+            	}
+            	else{
             	if(banderaPrimeraCarga==1 || banderaCreoEmpleadoSinCargar==1)
 				{
-            		controller_saveAsText("data.csv", listaEmpleados);
+
 					controller_saveAsBinary("data.bin", listaEmpleados);
 					banderaNoGuardo=0;
 				}
@@ -214,14 +231,13 @@ int main()
 				{
 					printf("%s", ARCHIVOSINCARGAR);
 				}
-
+            	}
             	break;
             case 10:
 
             	if(banderaNoGuardo==-1 && banderaCambio==1)
             	{
-            		printf("No ha guardado los cambios. Desea hacerlo?\n 1.SI\n2.NO ");
-            		scanf("%d", &opcionGuardar);
+            		PedirYValidarNumeroMejorado("No ha guardado los cambios. Desea hacerlo?\n 1.SI\n2.NO ", &opcionGuardar, 1, 2);
             		banderaNoGuardo=0;
             		if(opcionGuardar==2)
             		{
@@ -233,9 +249,9 @@ int main()
             			}
             		}
             		else{
-            			printf("8. Guardar los datos de los empleados en el archivo data.csv (modo texto).\n9. Guardar los datos de los empleados en el archivo data.csv (modo binario)");
-            			scanf("%d", &option);
-            			if(option==1){
+
+            			PedirYValidarNumeroMejorado("8. Guardar los datos de los empleados en el archivo data.csv (modo texto).\n9. Guardar los datos de los empleados en el archivo data.csv (modo binario)", &opcionGuardado,1, 2);
+            			if(opcionGuardado==1){
             				controller_saveAsText("data.csv", listaEmpleados);
             				controller_saveAsBinary("data.bin", listaEmpleados);
             			}

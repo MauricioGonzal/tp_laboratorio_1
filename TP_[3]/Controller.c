@@ -135,7 +135,7 @@ int controller_editEmployee(LinkedList* pArrayListEmployee)
 int controller_removeEmployee(LinkedList* pArrayListEmployee)
 {
 	int retorno;
-	char idStr[6];
+
 	int idAux;
 	int maxId;
 	int len;
@@ -155,7 +155,7 @@ int controller_removeEmployee(LinkedList* pArrayListEmployee)
 
 		len= ll_len(pArrayListEmployee);
 
-		PedirYValidarNumero(idStr, "Ingrese el Id del empleado que quiere eliminar.", &idAux);
+		PedirYValidarNumero("Ingrese el Id del empleado que quiere eliminar.", &idAux);
 		empleado= buscarIdEmpleado(pArrayListEmployee, len, idAux, &i);
 		if(empleado!=NULL)
 		{
