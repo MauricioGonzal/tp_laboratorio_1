@@ -20,6 +20,7 @@ void VerificarTresRetornos(int retorno, char mensajeCero[], char mensajeUno[], c
 void Menu ();
 int ordenarArrayInt(int* pArray, int limite);
 int ValidarNumero(char numeros[]);
-int LoadStringValidado(char message[], char loadedString[]);
-int PedirYValidarNumero(char numeros[], char mensaje[]);
+int validarStringLetras(char string[]);
+int PedirYValidarNumero(char numeros[], char mensaje[], int* numeroConvertido);
+int validarRango(int numero, int minimo, int maximo);
 #endif /* INPUT_H_ */

@@ -24,14 +24,17 @@ int getString(char* cadena, char* mensaje, char* mensajeError, int longitud){
 	int retorno=-1;
 	char bufferString[4096];
 	printf("%s", mensaje);
+
 	if(cadena!= NULL && longitud>0){
+
 		fflush(stdin);
-		if(fgets(bufferString, sizeof(bufferString), stdin)!= NULL){
+		if(fgets(bufferString, sizeof(bufferString), stdin)!= NULL && validarStringLetras(bufferString)==0){
+
 			if(bufferString[strlen(bufferString)-1]== '\n'){
 				bufferString[strlen(bufferString)-1]='\0';
 			}
 			if(strlen(bufferString)<= longitud){
-				strncpy(cadena, bufferString, longitud);
+				strcpy(cadena, bufferString);
 				retorno=0;
 			}
 			else{
@@ -40,6 +43,7 @@ int getString(char* cadena, char* mensaje, char* mensajeError, int longitud){
 			}
 		}
 	}
+
 	return retorno;
 }
 
@@ -88,23 +92,19 @@ void LoadString(char message[], char loadedString[]){
 
 }
 
-int LoadStringValidado(char message[], char loadedString[]){
-    char buffer[51];
+int validarStringLetras(char string[]){
+
     int retorno;
     retorno=0;
-	printf("%s\n", message);
-    fflush(stdin);
-    scanf("%[^\n]", buffer);
 
-    for(int i=0;i<strlen(buffer); i++){
-    	if(!isalpha(buffer[i])){
+
+    for(int i=0;i<strlen(string); i++){
+    	if(isdigit(string[i])){
     		retorno=-1;
     		break;
     	}
     }
-    if(retorno==0){
-    strcpy(loadedString, buffer);
-    }
+    printf("%d", retorno);
 
     return retorno;
 }
@@ -188,7 +188,7 @@ int ValidarNumero(char numeros[]){
 	for(int i=0;i<strlen(numeros);i++){
 
 		if(!isdigit(numeros[i])){
-			printf("\nEl dato ingresado no es numerico");
+			printf("\nEl dato ingresado no es numerico.\n");
 			retorno=-1;
 			break;
 		}
@@ -198,7 +198,7 @@ int ValidarNumero(char numeros[]){
 }
 
 
-int PedirYValidarNumero(char numeros[], char mensaje[]){
+int PedirYValidarNumero(char numeros[], char mensaje[], int* numeroConvertido){
 	int retorno;
 	char buffer[11];
 	retorno=-1;
@@ -209,6 +209,7 @@ int PedirYValidarNumero(char numeros[], char mensaje[]){
 
 		if(ValidarNumero(buffer)==0){
 			strcpy(numeros, buffer);
+			*numeroConvertido= atoi(numeros);
 			retorno=0;
 		}
 
@@ -259,3 +260,15 @@ pEmpleado = (Employee*) ll_get(pArrayListEmployee, i);
 	fclose(pFile);
     return output;
 }*/
+
+int validarRango(int numero, int minimo, int maximo){
+	int retorno;
+	retorno=0;
+
+	if(numero>maximo || numero<minimo){
+		printf("el numero esta fuera de rango");
+		retorno=-1;
+	}
+
+	return retorno;
+}

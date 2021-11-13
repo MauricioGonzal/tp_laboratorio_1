@@ -14,19 +14,18 @@
  */
 int controller_loadFromText(char* path , LinkedList* pArrayListEmployee)
 {
-	//llama a parsertext
+	int retorno;
 	FILE* pFile;
-
+	retorno=-1;
 	pFile= fopen(path, "r");
-	if(pFile!=NULL && pArrayListEmployee!=NULL && path!=NULL){
-
+	if(pFile!=NULL && pArrayListEmployee!=NULL && path!=NULL)
+	{
+		retorno=1;
 		parser_EmployeeFromText(pFile, pArrayListEmployee);
-
 	}
+
 	fclose(pFile);
-
-
-	return 1;
+	return retorno;
 }
 
 /** \brief Carga los datos de los empleados desde el archivo data.csv (modo binario).
@@ -71,22 +70,22 @@ int controller_loadFromBinary(char* path , LinkedList* pArrayListEmployee)
  */
 int controller_addEmployee(LinkedList* pArrayListEmployee)
 {
-
+	int maxId;
+	int retorno;
 	Employee* pEmpleado;
 	FILE* pFile;
 	FILE* pf;
 	pFile= fopen("maxId.txt", "r");
-	int maxId;
-	int len;
-	len= ll_len(pArrayListEmployee);
-
-	if(pArrayListEmployee!=NULL){
+	retorno= -1;
 
 
+	if(pArrayListEmployee!=NULL)
+	{
+	retorno=1;
 
-
-	if(pArrayListEmployee!=NULL){
 	pEmpleado= employee_new();
+	if(pEmpleado!=NULL)
+	{
 	CrearEmpleado(pEmpleado);
 	parser_maxIdFromText(pFile, &maxId);
 	fclose(pFile);
@@ -97,16 +96,13 @@ int controller_addEmployee(LinkedList* pArrayListEmployee)
 	fclose(pf);
 
 	ll_add(pArrayListEmployee, pEmpleado);
-	}
-	}
-	else{
-		printf("no");
+	retorno=0;
 	}
 
-	len= ll_len(pArrayListEmployee);
-	printf("%d", len);
 
-	return 1;
+	}
+
+	return retorno;;
 }
 
 /** \brief Modificar datos de empleado
@@ -119,10 +115,12 @@ int controller_addEmployee(LinkedList* pArrayListEmployee)
 int controller_editEmployee(LinkedList* pArrayListEmployee)
 {
 	int retorno;
+	retorno=-1;
+	if(pArrayListEmployee!=NULL){
 	retorno= editEmployee(pArrayListEmployee);
-	VerificarTresRetornos(retorno, "Empleado modificado correctamente\n", "El empleado con el id ingresado no existe. Verifique los datos.\n", "Error, vuelva a intentar");
 
-    return 1;
+	}
+    return retorno;
 }
 
 /** \brief Baja de empleado
@@ -134,38 +132,53 @@ int controller_editEmployee(LinkedList* pArrayListEmployee)
  */
 int controller_removeEmployee(LinkedList* pArrayListEmployee)
 {
+	int retorno;
+	char idStr[6];
 	int idAux;
 	int maxId;
+	int len;
+	int i;
+	Employee* empleado;
 	FILE* pFile;
 	FILE* pf;
+	retorno=-1;
+
+	if(pArrayListEmployee!=NULL){
+		retorno=1;
 	pFile= fopen("maxId.txt", "r");
+
 	parser_maxIdFromText(pFile, &maxId);
 	fclose(pFile);
 
-		int len;
+
 		len= ll_len(pArrayListEmployee);
-		Employee* empleado;
-		idAux= LoadInt("ingrese el id del empleado que desea eliminar");
-		for(int i=0; i<len; i++){
-			empleado= (Employee*)ll_get(pArrayListEmployee, i);
-			if(empleado!=NULL && idAux== empleado->id ){
+
+		PedirYValidarNumero(idStr, "Ingrese el Id del empleado que quiere eliminar.", &idAux);
+		empleado= buscarIdEmpleado(pArrayListEmployee, len, idAux, &i);
+		if(empleado!=NULL)
+		{
+
+
+			retorno=0;
 				ll_remove(pArrayListEmployee, i);
 				employee_delete(empleado);
-				if(empleado->id>maxId){
-					maxId= empleado->id;
+				if(idAux>maxId){
+					maxId= idAux;
 					pf= fopen("maxId.txt", "w");
 					fprintf(pf, "%d", maxId);
 					fclose(pf);
 				}
-				break;
+
 			}
-		}
+
+		return retorno;
+	}
 
 
 
 
 
-	return 1;
+	return retorno;
 }
 
 /** \brief Listar empleados
@@ -178,25 +191,33 @@ int controller_removeEmployee(LinkedList* pArrayListEmployee)
 int controller_ListEmployee(LinkedList* pArrayListEmployee)
 {
 	int len;
+	int retorno;
 	Employee* empleado;
 	int id;
 	char nombre[60];
 	int sueldo;
 	int horas;
 	len= ll_len(pArrayListEmployee);
-	printf("%d", len);
-	if(pArrayListEmployee!=NULL){
-	for(int i=0; i<len; i++){
+	retorno=-1;
+
+	if(pArrayListEmployee!=NULL)
+	{
+	for(int i=0; i<len; i++)
+	{
 		empleado= ll_get(pArrayListEmployee, i);
+		if(empleado!=NULL)
+		{
 		employee_getId(empleado, &id);
 		employee_getNombre(empleado, nombre);
 		employee_getHorasTrabajadas(empleado, &horas);
 		employee_getSueldo(empleado, &sueldo);
 		printf("%d %s %d %d\n", id, nombre, horas, sueldo);
+		retorno=0;
+	}
 	}
 	}
 
-    return 1;
+    return retorno;
 }
 
 /** \brief Ordenar empleados
@@ -208,7 +229,31 @@ int controller_ListEmployee(LinkedList* pArrayListEmployee)
  */
 int controller_sortEmployee(LinkedList* pArrayListEmployee)
 {
-    return 1;
+	int opcion;
+	int opcionDos;
+	int retorno;
+	retorno=-1;
+	if(pArrayListEmployee!=NULL){
+	elegirCriterioDeOrdenamiento(&opcion, &opcionDos);
+	retorno=0;
+	switch(opcion){
+	case 1:
+		ll_sort(pArrayListEmployee, employee_compareById, opcionDos);
+		break;
+	case 2:
+		ll_sort(pArrayListEmployee, employee_compareByName, opcionDos);
+		break;
+	case 3:
+		ll_sort(pArrayListEmployee, employee_compareBySalary, opcionDos);
+		break;
+	case 4:
+		ll_sort(pArrayListEmployee, employee_compareByHours, opcionDos);
+		break;
+
+	}
+	}
+
+    return retorno;
 }
 
 /** \brief Guarda los datos de los empleados en el archivo data.csv (modo texto).
