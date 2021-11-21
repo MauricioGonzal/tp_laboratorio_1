@@ -8,75 +8,180 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include "input.h"
 #include "ArrayEmployees.h"
 #define CARGADO 0
 #define VACIO 1
 
-int initEmployees(eEmployee* empleados, int len)
-{
-	int retorno=-1;
-	if(empleados!=NULL && len>0){
-	retorno=0;
-	for(int i=0; i<len; i++){
-		empleados[i].isEmpty=VACIO;
-	}
-	}
+ void Menu (){
+	 printf(". ALTAS: Se debe permitir ingresar un empleado calculando automáticamente el número de Id. El resto de los campos se le pedirá al usuario.\n2. MODIFICAR: Se ingresará el Número de Id, "
+			 "permitiendo modificar: o Nombre o Apellido o Salario o Sector.\n3. BAJA: Se ingresará el Número de Id y se eliminará el empleado del sistema. \n4. INFORMAR: \n1. Listado de los empleados ordenados alfabéticamente por Apellido y Sector.\n"
+			 "2. Total y promedio de los salarios, y cuántos empleados superan el salario promedio.");
+ }
+
+ int initEmployees(Employee* list, int len){
+	 int retorno;
+	 retorno=-1;
+	 if(list!=NULL && len>0){
+		 retorno=0;
+		 for(int i=0; i<len; i++){
+			 list[i].isEmpty=VACIO;
+		 }
+	 }
+	 return retorno;
+ }
+
+ int addEmployee(Employee* list, int len, int id, char name[],char
+ lastName[],float salary,int sector){
+	 int retorno;
+	 retorno=-1;
+	 if(list!=NULL && len>0){
+		 for(int i=0;i<len;i++){
+			 if(list[i].isEmpty==VACIO){
+				 list[i].id= id;
+				 strcpy(list[i].lastName, lastName);
+				 strcpy(list[i].name, name);
+				 list[i].salary= salary;
+				 list[i].sector= sector;
+				 list[i].isEmpty= CARGADO;
+				 retorno=0;
+				 break;
+			 }
+		 }
+	 }
+
+	 return retorno;
+ }
 
 
- return retorno;
+ int createEmployee(Employee list[], int len, int* id){
+ 	int retorno;
+ 	char name[51];
+ 	char lastName[51];
+ 	int sector;
+ 	int auxId;
+ 	float salary;
+ 	auxId= *id;
+ 	auxId++;
+ 	*id=auxId;
+ 	getString(name, "Ingrese el nombre", "error", sizeof(name));
+ 	getString(lastName, "Ingrese el apellido", "ERROR", sizeof(lastName));
+ 	salary= LoadFloat("Ingrese el salario");
+ 	PedirYValidarNumero("Ingrese el sector", &sector);
+ 	if(addEmployee(list, len, auxId, name, lastName, salary, sector)==0){
+ 		retorno=0;
+ 	}
+ 	else{
+ 		printf("Hubo un error");
+ 	}
+
+ 	return retorno;
+
+ }
+
+ int printEmployees(Employee* list, int length){
+	 int retorno;
+	 retorno=-1;
+	 if(list!=NULL && length>0){
+		 retorno=0;
+		 for(int i=0; i<length; i++){
+		 if(list[i].isEmpty==CARGADO){
+			 printOneEmployee(list[i]);
+		 }
+		 }
+	 }
+	 return retorno;
+ }
+
+void printOneEmployee(Employee employee){
+	printf("%d %s %s %f %d\n", employee.id, employee.lastName, employee.name, employee.salary, employee.sector);
 }
 
 
+int findEmployeeById(Employee* list, int len,int id){
+	 int i;
+	 int retorno;
+	 retorno=-1;
+	 if(list!=NULL && len>0){
+		 for(i=0; i<len; i++){
+			 if(list[i].isEmpty==CARGADO && list[i].id==id){
+				 retorno=i;
 
-int addEmployee(eEmployee empleados[], int len, int id, char name[],char lastName[],float salary,int sector)
-{
+				 break;
+			 }
+		 }
+	 }
+	 return retorno;
+}
+
+int modificarEmployee(Employee list[], int len, int i){
 	int retorno;
+	int opcion;
 	retorno=-1;
-	for(int i=0; i<len; i++){
-		if(empleados[i].isEmpty==VACIO){
-			empleados[i].id= id;
-			strcpy(empleados[i].name, name);
-			strcpy(empleados[i].lastName, lastName);
-			empleados[i].salary= salary;
-			empleados[i].sector= sector;
-			empleados[i].isEmpty= CARGADO;
-			retorno=0;
+	if(list!=NULL && len>0){
+		PedirYValidarNumeroMejorado("Ingrese que campo quiere modificar.\n1.NOMBRE\n2.APELLIDO.\n3.SALARIO.\n4.SECTOR\n", &opcion, 1, 4);
+		switch(opcion){
+		case 1:
+			getString(list[i].name, "Ingrese el nombre", "ERROR", sizeof(list[i].name));
 			break;
-		}
-
-	}
- return retorno;
-}
-
-
-void CargarEmpleado (int* id, eEmployee empleados[], int tam){
-	char name[51];
-		 char lastName[51];
-		 float salary;
-		 int sector;
-		 int auxId;
-		 auxId=0;
-
-	LoadString("ingrese el nombre: ", name);
-	LoadString("\ningrese el apellido:", lastName);
-	salary= LoadFloat("\nIngrese el salario:");
-	sector= LoadInt("\ningrese el sector:");
-	auxId= auxId+1;
-	*id= auxId;
-	addEmployee(empleados, tam, auxId, name, lastName, salary, sector);
-
-}
-
-void Imprimir (eEmployee lista[], int tam){
-	for(int i=0;i<tam; i++){
-		if(lista[i].isEmpty==0){
-			ImprimirUno(lista[i]);
+		case 2:
+			getString(list[i].lastName, "Ingrese el nuevo apellido", "ERROR", sizeof(list[i].lastName));
+			break;
+		case 3:
+			list[i].salary= LoadFloat("Ingrese el nuevo salario");
+			break;
+		default:
+			PedirYValidarNumero("Ingrese el nuevo sector", &list[i].sector);
 			break;
 		}
 	}
+	return retorno;
 }
 
+int removeEmployee(Employee* list, int len, int id){
+	 int retorno;
+	 int auxRetorno;
+	 retorno=-1;
+	 if(list!=NULL && len>0){
+		 auxRetorno= findEmployeeById(list, len, id);
+		 if(auxRetorno!=-1){
+			 list[auxRetorno].isEmpty=VACIO;
+			 retorno=0;
+		 }
+	 }
 
-void ImprimirUno(eEmployee lista){
-	printf("%4d %15s %15s  %6.2f \n", lista.id, lista.lastName, lista.name, lista.salary);
+	 return retorno;
+}
+
+int informesSalary(Employee list[], int len, float* total, float* promedio){
+	int retorno;
+	int cantidadEmpleados;
+	float auxTotal;
+	float auxPromedio;
+	auxTotal=0;
+	cantidadEmpleados=0;
+	retorno=-1;
+	if(list!=NULL && len>0 ){
+		retorno=0;
+		for(int i=0; i<len; i++){
+			if(list[i].isEmpty==CARGADO){
+				auxTotal= auxTotal+ list[i].salary;
+				cantidadEmpleados++;
+
+			}
+		}
+		auxPromedio= auxTotal/cantidadEmpleados;
+		*total= auxTotal;
+
+
+		for(int i=0;i<len;i++){
+			if(list[i].isEmpty==CARGADO && list[i].salary>auxPromedio){
+				retorno++;
+			}
+		}
+
+		*promedio= auxPromedio;
+	}
+
+	return retorno;
 }

@@ -16,32 +16,56 @@
 #include "input.h"
 #define VACIO 1
 #define CARGADO 0
-#define TAM 10
-#define SEGUNDOTAM 20
+#define TAMLISTA 1000
+
 
 
  int main(void) {
 	setbuf(stdout, NULL);
 	int opcion;
-	int id;
-	id=0;
-	eEmployee empleados[TAM];
-	initEmployees(empleados, TAM);
-
-
+	int auxId;
+	int retorno;
+	int id=0;
+	int auxOpcion;
+	float promedio;
+	float total;
+	int cantidadEmpleadosSalarioAlto;
+	Employee lista[TAMLISTA];
+	initEmployees(lista, TAMLISTA);
 	do{
-		printf("MENU DE OPCIONES");
-		printf("1. ALTAS: Se debe permitir ingresar un empleado calculando automáticamente el número de Id. El resto de los campos se le pedirá al usuario.\n"
-				"2. MODIFICAR: Se ingresará el Número de Id, permitiendo modificar: o Nombre o Apellido o Salario o Sector"
-				"\n3. BAJA: Se ingresará el Número de Id y se eliminará el empleado del sistema. \n4. INFORMAR: \n1. Listado de los empleados ordenados alfabéticamente por Apellido y Sector."
-				"2. Total y promedio de los salarios, y cuántos empleados superan el salario promedio.\n 5.SALIR");
-		opcion= LoadIntRange("Ingrese una opcion", 5);
+		Menu();
+		PedirYValidarNumero("\nIngrese una opcion", &opcion);
 		switch(opcion){
 		case 1:
-			CargarEmpleado(&id, empleados, TAM);
+			createEmployee(lista, TAMLISTA, &id);
 			break;
-		case 5:
-			Imprimir(empleados, TAM);
+		case 2:
+			printEmployees(lista, TAMLISTA);
+			PedirYValidarNumero("Ingrese el id del empleado a modificar", &auxId );
+			retorno= findEmployeeById(lista, TAMLISTA, auxId);
+			if(retorno!=-1){
+				modificarEmployee(lista, TAMLISTA, retorno);
+			}
+			else{
+				printf("No existe empleado con el id ingresado");
+			}
+			break;
+		case 3:
+			printEmployees(lista, TAMLISTA);
+			PedirYValidarNumero("Ingrese el id del empleado a eliminar", &auxId);
+			removeEmployee(lista, TAMLISTA, auxId);
+			break;
+		case 4:
+			PedirYValidarNumero("\n1. Listado de los empleados ordenados alfabéticamente por Apellido y Sector..\n2.Total y promedio de los salarios, y cuántos empleados superan el salario promedio.", &auxOpcion);
+			switch(auxOpcion){
+			case 1:
+
+				break;
+			case 2:
+				cantidadEmpleadosSalarioAlto= informesSalary(lista, TAMLISTA, &total, &promedio);
+				printf("Total salarios:%f\nPromedio salarios:%f\nCantidad de empleados que superan el salario promedio:%d\n", total, promedio, cantidadEmpleadosSalarioAlto);
+				break;
+			}
 			break;
 		}
 	}while(opcion!=5);
@@ -51,6 +75,10 @@
 
 	return EXIT_SUCCESS;
 }
+
+
+
+
 
 
 

@@ -118,12 +118,27 @@ typedef struct{
 	 float salary;
 	 int sector;
 	 int isEmpty;
-	}eEmployee;
+	}Employee;
 
-	int initEmployees(eEmployee* empleados, int len);
-	void CargarEmpleado (int* id, eEmployee empleados[], int tam);
-	int addEmployee(eEmployee empleados[], int len, int id, char name[],char lastName[],float salary,int sector);
-	void Imprimir (eEmployee lista[], int tam);
-	void ImprimirUno(eEmployee lista);
+void Menu();
+
+int initEmployees(Employee* list, int len);
+
+int addEmployee(Employee* list, int len, int id, char name[],char
+lastName[],float salary,int sector);
+
+int createEmployee(Employee list[], int len, int* id);
+
+void printOneEmployee(Employee employee);
+
+int printEmployees(Employee* list, int length);
+
+int findEmployeeById(Employee* list, int len,int id);
+
+int modificarEmployee(Employee list[], int len, int i);
+
+int removeEmployee(Employee* list, int len, int id);
+
+int informesSalary(Employee list[], int len, float* total, float* promedio);
 
 #endif /* ARRAYEMPLOYEES_H_ */
