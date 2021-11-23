@@ -25,7 +25,7 @@
 	setbuf(stdout, NULL);
 	int opcion;
 	int auxId;
-	int retorno;
+
 	int id=0;
 	int auxOpcion;
 	int bandera;
@@ -51,29 +51,27 @@
 		case 2:
 			if(bandera==1){
 			printEmployees(lista, TAMLISTA);
-			PedirYValidarNumero("Ingrese el id del empleado a modificar", &auxId );
-			retorno= findEmployeeById(lista, TAMLISTA, auxId);
-			if(retorno!=-1){
-				modificarEmployee(lista, TAMLISTA, retorno);
+			if(modificarEmployee(lista, TAMLISTA)==-1)
+			{
+			printf("No existe empleado con el id ingresado\n");
 			}
-			else{
-				printf("No existe empleado con el id ingresado\n");
-			}
+
 			}else{
 				printf(SINCARGAR);
 			}
 			break;
 		case 3:
-			if(bandera==1){
+			if(bandera==1)
+			{
 			printEmployees(lista, TAMLISTA);
 			PedirYValidarNumero("Ingrese el id del empleado a eliminar", &auxId);
-			if(findEmployeeById(lista, TAMLISTA, auxId)!=-1){
-			removeEmployee(lista, TAMLISTA, auxId);
-			}
-			else{
+			if(removeEmployee(lista, TAMLISTA, auxId)==-1){
 				printf("No existe empleado con el id ingresado\n");
+
 			}
-			}else{
+			}
+			else
+			{
 				printf(SINCARGAR);
 			}
 			break;

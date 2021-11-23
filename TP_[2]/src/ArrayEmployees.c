@@ -19,6 +19,7 @@
 			 "2. Total y promedio de los salarios, y cuántos empleados superan el salario promedio.");
  }
 
+
  int initEmployees(Employee* list, int len){
 	 int retorno;
 	 retorno=-1;
@@ -30,6 +31,7 @@
 	 }
 	 return retorno;
  }
+
 
  int addEmployee(Employee* list, int len, int id, char name[],char
  lastName[],float salary,int sector){
@@ -61,6 +63,9 @@
  	int sector;
  	int auxId;
  	float salary;
+ 	retorno=-1;
+ 	if(list!=NULL && len>0)
+ 	{
  	auxId= *id;
  	auxId++;
  	*id=auxId;
@@ -72,27 +77,36 @@
  		retorno=0;
  	}
  	else{
- 		printf("Hubo un error");
+ 		retorno=-1;
+ 	}
  	}
 
  	return retorno;
 
  }
 
+
  int printEmployees(Employee* list, int length){
 	 int retorno;
+	 int bandera;
 	 retorno=-1;
 	 if(list!=NULL && length>0){
 		 retorno=0;
-    		 printf("ID,APELLIDO,NOMBRE,SALARIO,SECTOR\n\n");
+    	printf("ID,APELLIDO,NOMBRE,SALARIO,SECTOR\n\n");
 		 for(int i=0; i<length; i++){
 		 if(list[i].isEmpty==CARGADO){
 			 printOneEmployee(list[i]);
+			 bandera=1;
 		 }
 		 }
 	 }
+
+	 if(bandera!=1){
+		 printf("No hay empleados activos");
+	 }
 	 return retorno;
  }
+
 
 void printOneEmployee(Employee employee){
 	printf("%-5d %-10s %-10s %-10.2f %-10d\n", employee.id, employee.lastName, employee.name, employee.salary, employee.sector);
@@ -115,11 +129,21 @@ int findEmployeeById(Employee* list, int len,int id){
 	 return retorno;
 }
 
-int modificarEmployee(Employee list[], int len, int i){
+
+int modificarEmployee(Employee list[], int len){
 	int retorno;
 	int opcion;
+	int id;
+	int i;
 	retorno=-1;
+
+
 	if(list!=NULL && len>0){
+		PedirYValidarNumero("Ingrese el id del empleado a modificar", &id );
+		i=findEmployeeById(list, len, id);
+		if(i!=-1){
+			retorno=0;;
+
 		PedirYValidarNumeroMejorado("Ingrese que campo quiere modificar.\n1.NOMBRE\n2.APELLIDO.\n3.SALARIO.\n4.SECTOR\n", &opcion, 1, 4);
 		switch(opcion){
 		case 1:
@@ -135,9 +159,11 @@ int modificarEmployee(Employee list[], int len, int i){
 			PedirYValidarNumero("Ingrese el nuevo sector", &list[i].sector);
 			break;
 		}
+		}
 	}
 	return retorno;
 }
+
 
 int removeEmployee(Employee* list, int len, int id){
 	 int retorno;
@@ -153,6 +179,7 @@ int removeEmployee(Employee* list, int len, int id){
 
 	 return retorno;
 }
+
 
 int informesSalary(Employee list[], int len, float* total, float* promedio){
 	int retorno;
@@ -186,6 +213,7 @@ int informesSalary(Employee list[], int len, float* total, float* promedio){
 
 	return retorno;
 }
+
 
 int sortEmployees(Employee* list, int len, int order){
 	 int retorno;
