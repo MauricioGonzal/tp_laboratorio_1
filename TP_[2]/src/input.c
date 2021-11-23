@@ -190,3 +190,5 @@ int PedirYValidarNumero(char mensaje[], int* numeroConvertido){
 	return retorno;
 
 }
+
+

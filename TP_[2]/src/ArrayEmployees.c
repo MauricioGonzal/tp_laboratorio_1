@@ -14,7 +14,7 @@
 #define VACIO 1
 
  void Menu (){
-	 printf(". ALTAS: Se debe permitir ingresar un empleado calculando automáticamente el número de Id. El resto de los campos se le pedirá al usuario.\n2. MODIFICAR: Se ingresará el Número de Id, "
+	 printf("1. ALTAS: Se debe permitir ingresar un empleado calculando automáticamente el número de Id. El resto de los campos se le pedirá al usuario.\n2. MODIFICAR: Se ingresará el Número de Id, "
 			 "permitiendo modificar: o Nombre o Apellido o Salario o Sector.\n3. BAJA: Se ingresará el Número de Id y se eliminará el empleado del sistema. \n4. INFORMAR: \n1. Listado de los empleados ordenados alfabéticamente por Apellido y Sector.\n"
 			 "2. Total y promedio de los salarios, y cuántos empleados superan el salario promedio.");
  }
@@ -84,6 +84,7 @@
 	 retorno=-1;
 	 if(list!=NULL && length>0){
 		 retorno=0;
+    		 printf("ID,APELLIDO,NOMBRE,SALARIO,SECTOR\n\n");
 		 for(int i=0; i<length; i++){
 		 if(list[i].isEmpty==CARGADO){
 			 printOneEmployee(list[i]);
@@ -94,7 +95,7 @@
  }
 
 void printOneEmployee(Employee employee){
-	printf("%d %s %s %f %d\n", employee.id, employee.lastName, employee.name, employee.salary, employee.sector);
+	printf("%-5d %-10s %-10s %-10.2f %-10d\n", employee.id, employee.lastName, employee.name, employee.salary, employee.sector);
 }
 
 
@@ -184,4 +185,68 @@ int informesSalary(Employee list[], int len, float* total, float* promedio){
 	}
 
 	return retorno;
+}
+
+int sortEmployees(Employee* list, int len, int order){
+	 int retorno;
+	 int opcion;
+	 Employee buffer;
+
+	 retorno=-1;
+	 PedirYValidarNumeroMejorado("Ingrese que campo quiere ordenar:\n1.NOMBRE\n2.SECTOR", &opcion, 1, 2);
+
+	 if(list!=NULL && len>0){
+		 retorno=0;
+		 if(opcion==1){
+	 for(int i=0;i<len-1;i++)
+	 {	if(list[i].isEmpty==CARGADO){
+		 for(int j=i+1; j<len; j++)
+		 {
+			 if(order==1){
+			if(strcmp(list[i].lastName, list[j].lastName)>0)
+			{
+				buffer= list[i];
+				list[i]= list[j];
+				list[j]=buffer;
+			}
+			 }
+			 else{
+				 if(strcmp(list[i].lastName, list[j].lastName)<0)
+				 			{
+				 				buffer= list[i];
+				 				list[i]= list[j];
+				 				list[j]=buffer;
+				 			}
+			 }
+		 }
+	 }
+	 }
+	 }
+		 else{
+			 for(int i=0;i<len-1;i++)
+			 {	if(list[i].isEmpty==CARGADO){
+				 for(int j=i+1; j<len; j++)
+				 {
+					 if(order==1){
+					if(list[i].sector>list[j].sector)
+					{
+						buffer= list[i];
+						list[i]= list[j];
+						list[j]=buffer;
+					}
+					 }
+					 else{
+						 if(list[i].sector<list[j].sector)
+						 			{
+						 				buffer= list[i];
+						 				list[i]= list[j];
+						 				list[j]=buffer;
+						 			}
+					 }
+				 }
+			 }
+			 }
+		 }
+	 }
+	 return retorno;
 }
