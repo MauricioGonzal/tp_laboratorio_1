@@ -71,7 +71,7 @@
  	*id=auxId;
  	getString(name, "Ingrese el nombre", "error", sizeof(name));
  	getString(lastName, "Ingrese el apellido", "ERROR", sizeof(lastName));
- 	salary= LoadFloat("Ingrese el salario");
+ 	PedirYValidarNumeroFlotante("Ingrese el salario", &salary);
  	PedirYValidarNumero("Ingrese el sector", &sector);
  	if(addEmployee(list, len, auxId, name, lastName, salary, sector)==0){
  		retorno=0;
@@ -135,6 +135,7 @@ int modificarEmployee(Employee list[], int len){
 	int opcion;
 	int id;
 	int i;
+	float salary;
 	retorno=-1;
 
 
@@ -153,7 +154,8 @@ int modificarEmployee(Employee list[], int len){
 			getString(list[i].lastName, "Ingrese el nuevo apellido", "ERROR", sizeof(list[i].lastName));
 			break;
 		case 3:
-			list[i].salary= LoadFloat("Ingrese el nuevo salario");
+			PedirYValidarNumeroFlotante("Ingrese el nuevo salario", &salary);
+			list[i].salary= salary;
 			break;
 		default:
 			PedirYValidarNumero("Ingrese el nuevo sector", &list[i].sector);

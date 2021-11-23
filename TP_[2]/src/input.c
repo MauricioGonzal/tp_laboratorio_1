@@ -52,17 +52,19 @@ int getString(char* cadena, char* mensaje, char* mensajeError, int longitud){
 	return retorno;
 }
 
-float LoadFloat(char message[]){
+/*float LoadFloat(char message[]){
     float option;
-    printf("%s", message);
-    scanf("%f", &option);
+    char numero[100];
+
+    getString(numero, mesaje, "error", sizeof(numero));
+
     while(option <0)
     {
     printf("\nERROR.%s", message);
     scanf("%f", &option);
     }
     return option;
-}
+}*/
 
 int validarStringLetras(char string[]){
 
@@ -191,4 +193,43 @@ int PedirYValidarNumero(char mensaje[], int* numeroConvertido){
 
 }
 
+int PedirYValidarNumeroFlotante(char mensaje[], float* numeroConvertido){
+	int retorno;
+	char buffer[11];
+	retorno=-1;
+	do{
+		printf("%s", mensaje);
+		fflush(stdin);
+		scanf("%[^\n]", buffer);
 
+		if(ValidarNumeroFlotante(buffer)==0)
+		{
+			retorno=1;
+
+			*numeroConvertido= atoi(buffer);
+			retorno=0;
+
+		}
+	}while(retorno!=0);
+
+	return retorno;
+
+}
+
+int ValidarNumeroFlotante(char numeros[]){
+	int retorno=0;
+	int banderaComa;
+	banderaComa=0;
+	for(int i=0;i<strlen(numeros);i++){
+		if(banderaComa==0 && numeros[i]=='.'){
+			banderaComa=1;
+		}
+		if(!isdigit(numeros[i])||(numeros[i]=='.' && banderaComa==1)){
+			printf("\nEl dato ingresado no es valido.\n");
+			retorno=-1;
+			break;
+		}
+	}
+	return retorno;
+
+}

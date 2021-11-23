@@ -89,6 +89,8 @@ int validarRango(int numero, int minimo, int maximo);
 /// @return solo retorna 0 si esta ok
 int PedirYValidarNumeroMejorado(char mensaje[], int* numeroConvertido, int min, int max);
 
+int PedirYValidarNumeroFlotante(char mensaje[], float* numeroConvertido);
 
+int ValidarNumeroFlotante(char numeros[]);
 #endif /* INPUT_H_ */
 

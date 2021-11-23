@@ -25,7 +25,6 @@
 	setbuf(stdout, NULL);
 	int opcion;
 	int auxId;
-
 	int id=0;
 	int auxOpcion;
 	int bandera;
