@@ -17,7 +17,7 @@
 /// @param mensajeError
 /// @param longitud
 /// @return -1 si si el puntero cadena es NULL o la longitud es menor a 1, 0 si esta ok, 1 si son numeros
-int getString(char* cadena, char* mensaje, char* mensajeError, int longitud);
+int getString(char* cadena, char* mensaje, char* mensajeError, int longitud, int reintentos);
 
 /// @fn float LoadFloat(char[])
 /// @brief obtiene un flotante
@@ -68,7 +68,7 @@ int ValidarNumero(char numeros[]);
 /// @return 0 si ok, -1 si es numero
 int validarStringLetras(char string[]);
 
-int PedirYValidarNumero(char mensaje[], int* numeroConvertido);
+int PedirYValidarNumero(char mensaje[], int* numeroConvertido, int reintentos);
 
 /// @fn int validarRango(int, int, int)
 /// @brief valida que el numero parametro este dentro del rango
@@ -87,9 +87,9 @@ int validarRango(int numero, int minimo, int maximo);
 /// @param min el minimo que puede tener el numero ingresado
 /// @param max el maximo que puede tener el numero ingresado
 /// @return solo retorna 0 si esta ok
-int PedirYValidarNumeroMejorado(char mensaje[], int* numeroConvertido, int min, int max);
+int PedirYValidarNumeroMejorado(char mensaje[], int* numeroConvertido, int min, int max, int reintentos);
 
-int PedirYValidarNumeroFlotante(char mensaje[], float* numeroConvertido);
+int PedirYValidarNumeroFlotante(char mensaje[], float* numeroConvertido, int reintentos);
 
 int ValidarNumeroFlotante(char numeros[]);
 #endif /* INPUT_H_ */

@@ -39,7 +39,7 @@
 	initEmployees(lista, TAMLISTA);
 	do{
 		Menu();
-		PedirYValidarNumero("\nIngrese una opcion\n", &opcion);
+		PedirYValidarNumero("\nIngrese una opcion\n", &opcion, 5);
 		switch(opcion){
 		case 1:
 			createEmployee(lista, TAMLISTA, &id);
@@ -48,22 +48,25 @@
 			break;
 
 		case 2:
-			if(bandera==1){
-			printEmployees(lista, TAMLISTA);
-			if(modificarEmployee(lista, TAMLISTA)==-1)
-			{
-			printf("No existe empleado con el id ingresado\n");
-			}
+					if(printEmployees(lista, TAMLISTA)==0){
+					if(modificarEmployee(lista, TAMLISTA)==1){
+						printf("no existe el empleado con el id ingresado\n");
+					}
+					}
+					else{
+						printf(SINCARGAR);
+					}
+				/*if(modificarEmployee(lista, TAMLISTA)==-1)
+				{
+				printf("No existe empleado con el id ingresado\n");
+				}*/
 
-			}else{
-				printf(SINCARGAR);
-			}
 			break;
 		case 3:
 			if(bandera==1)
 			{
 			printEmployees(lista, TAMLISTA);
-			PedirYValidarNumero("Ingrese el id del empleado a eliminar", &auxId);
+			PedirYValidarNumero("Ingrese el id del empleado a eliminar", &auxId, 5);
 			if(removeEmployee(lista, TAMLISTA, auxId)==-1){
 				printf("No existe empleado con el id ingresado\n");
 
@@ -76,10 +79,10 @@
 			break;
 		case 4:
 			if(bandera==1){
-			PedirYValidarNumeroMejorado("\n1. Listado de los empleados ordenados alfabéticamente por Apellido y Sector..\n2.Total y promedio de los salarios, y cuántos empleados superan el salario promedio.", &auxOpcion,1,2);
+			PedirYValidarNumeroMejorado("\n1. Listado de los empleados ordenados alfabéticamente por Apellido y Sector..\n2.Total y promedio de los salarios, y cuántos empleados superan el salario promedio.", &auxOpcion,1,2, 5);
 			switch(auxOpcion){
 			case 1:
-				PedirYValidarNumeroMejorado("Ingrese como quiere ordenar los empleados: \n0.DESCENDENTE\n1.ASCENDENTE\n", &orden, 0, 1);
+				PedirYValidarNumeroMejorado("Ingrese como quiere ordenar los empleados: \n0.DESCENDENTE\n1.ASCENDENTE\n", &orden, 0, 1, 5);
 
 				if(orden==0){
 					sortEmployees(lista, TAMLISTA, 0);

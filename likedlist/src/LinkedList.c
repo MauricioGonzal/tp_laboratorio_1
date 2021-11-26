@@ -258,13 +258,11 @@ int ll_remove(LinkedList* this,int index)
 int ll_clear(LinkedList* this)
 {
     int returnAux = -1;
-    int len;
-    len= ll_len(this);
     if(this!=NULL)
     {
-    for(int i=0; i<len; i++)
+    while(ll_len(this))
     {
-    	ll_remove(this, i);
+    	ll_remove(this, 0);
     }
     returnAux=0;
     }
@@ -511,20 +509,13 @@ int ll_sort(LinkedList* this, int (*pFunc)(void* ,void*), int order)
           {
               for(int j=i+1; j<len; j++)
               {
-                  if(order == 0 && pFunc(ll_get(this, i), ll_get(this, j))<0)
+                  if((order == 0 && pFunc(ll_get(this, i), ll_get(this, j))<0) ||(order == 1 && pFunc(ll_get(this, i), ll_get(this, j))>0))
                   {
                       pElemAux = ll_get(this,i);
                       ll_set(this, i, ll_get(this,j));
                       ll_set(this, j, pElemAux);
                   }
-                  else
-                  {
-                	  if(order == 1 && pFunc(ll_get(this, i), ll_get(this, j))>0){
-                     pElemAux = ll_get(this,i);
-                      ll_set(this, i, ll_get(this,j));
-                      ll_set(this, j, pElemAux);
-                  }
-                  }
+
               }
           }
           returnAux=0;

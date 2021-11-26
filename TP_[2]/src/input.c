@@ -20,7 +20,7 @@
 #include <string.h>
 #include <ctype.h>
 
-int getString(char* cadena, char* mensaje, char* mensajeError, int longitud){
+int getString(char* cadena, char* mensaje, char* mensajeError, int longitud, int reintentos){
 	int retorno=-1;
 	char bufferString[4096];
 
@@ -29,6 +29,7 @@ int getString(char* cadena, char* mensaje, char* mensajeError, int longitud){
 		retorno=1;
 		fflush(stdin);
 		do{
+			reintentos--;
 			printf("\n%s", mensaje);
 
 		if(fgets(bufferString, sizeof(bufferString), stdin)!= NULL && validarStringLetras(bufferString)==0){
@@ -45,7 +46,7 @@ int getString(char* cadena, char* mensaje, char* mensajeError, int longitud){
 
 				printf("%s", mensajeError);
 			}
-		}while(retorno!=0);
+		}while(retorno!=0 && reintentos>0);
 
 	}
 
@@ -85,7 +86,7 @@ int validarStringLetras(char string[]){
 
 int SalirDelPrograma(){
 	int opcion;
-	PedirYValidarNumeroMejorado("seguro desea salir del programa?\n1.SI\n2.NO", &opcion, 1, 2);
+	PedirYValidarNumeroMejorado("seguro desea salir del programa?\n1.SI\n2.NO", &opcion, 1, 2, 5);
 
 	return opcion;
 }
@@ -145,11 +146,12 @@ int validarRango(int numero, int minimo, int maximo){
 	return retorno;
 }
 
-int PedirYValidarNumeroMejorado(char mensaje[], int* numeroConvertido, int min, int max){
+int PedirYValidarNumeroMejorado(char mensaje[], int* numeroConvertido, int min, int max, int reintentos){
 	int retorno;
 	char buffer[11];
 	retorno=-1;
 	do{
+		reintentos--;
 		printf("%s", mensaje);
 		fflush(stdin);
 		scanf("%[^\n]", buffer);
@@ -164,17 +166,18 @@ int PedirYValidarNumeroMejorado(char mensaje[], int* numeroConvertido, int min, 
 			}
 
 		}
-	}while(retorno!=0);
+	}while(retorno!=0 && reintentos>0);
 
 	return retorno;
 
 }
 
-int PedirYValidarNumero(char mensaje[], int* numeroConvertido){
+int PedirYValidarNumero(char mensaje[], int* numeroConvertido, int reintentos){
 	int retorno;
 	char buffer[11];
 	retorno=-1;
 	do{
+		reintentos--;
 		printf("%s", mensaje);
 		fflush(stdin);
 		scanf("%[^\n]", buffer);
@@ -187,17 +190,18 @@ int PedirYValidarNumero(char mensaje[], int* numeroConvertido){
 			retorno=0;
 
 		}
-	}while(retorno!=0);
+	}while(retorno!=0 && reintentos>0);
 
 	return retorno;
 
 }
 
-int PedirYValidarNumeroFlotante(char mensaje[], float* numeroConvertido){
+int PedirYValidarNumeroFlotante(char mensaje[], float* numeroConvertido, int reintentos){
 	int retorno;
 	char buffer[11];
 	retorno=-1;
 	do{
+		reintentos--;
 		printf("%s", mensaje);
 		fflush(stdin);
 		scanf("%[^\n]", buffer);
@@ -210,7 +214,7 @@ int PedirYValidarNumeroFlotante(char mensaje[], float* numeroConvertido){
 			retorno=0;
 
 		}
-	}while(retorno!=0);
+	}while(retorno!=0 && reintentos>0);
 
 	return retorno;
 
